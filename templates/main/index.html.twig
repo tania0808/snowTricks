@@ -1,20 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Snowtricks{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/tania/PhpstormProjects/snowTricks/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/tania/PhpstormProjects/snowTricks/templates/main/index.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
-    </ul>
+<div class="w-full h-5/6">
+    <img class="flex w-full max-h-5/6 h-[85vh] object-cover" src="images/yann-allegre-8FG9tt8qZ-8-unsplash.jpg" alt="">
 </div>
+<h1 class="absolute top-[40%] left-24 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Find Your Snowboard Tricks</h1>
+<button type="button" class="absolute bottom-32 right-6 text-white bg-black hover:opacity-80 font-medium rounded-full text-sm p-5 text-center inline-flex items-center me-2">
+    <i class="fa-solid fa-chevron-down"></i>
+    <span class="sr-only">Icon description</span>
+</button>
 {% endblock %}

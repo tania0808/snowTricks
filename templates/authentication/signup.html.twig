@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sign Up!{% endblock %}
+
+{% block body %}
+<section class="bg-gray-50">
+    <div class="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div class="w-full mt-10 bg-white rounded-lg shadow sm:max-w-md xl:p-0">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                    Create your account
+                </h1>
+
+                {{ form_start(registrationForm, {'attr': {'class': 'max-w-sm mx-auto mt-24'}}) }}
+                <div class="mb-5">
+                    {{ form_label(registrationForm.username, 'Your username', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                    {{ form_widget(registrationForm.username, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'jane_doe', 'required': 'required'}}) }}
+                </div>
+
+                <div class="mb-5">
+                    {{ form_label(registrationForm.email, 'Your email', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'jane.doe@gmail.com', 'required': 'required'}}) }}
+                </div>
+
+                <div class="mb-5">
+                    {{ form_label(registrationForm.plainPassword, 'Your password', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'required': 'required'}}) }}
+                    {% if form_errors(registrationForm.plainPassword) %}
+                        <div class="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(registrationForm.plainPassword) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if form_errors(registrationForm.username) or form_errors(registrationForm.email) %}
+                    <div class="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <span class="font-medium">User already exists !</span>
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
