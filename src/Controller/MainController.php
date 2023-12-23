@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,15 +13,10 @@ class MainController extends AbstractController
         'Hello', 'Hi', 'Bye'
     ];
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(TrickRepository $trickRepository): Response
     {
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $trick = $trickRepository->findAll();
+        dd($trick);
         return $this->render('main/index.html.twig', []);
-    }
-
-    #[Route('/messages/{id}', name: 'show_one')]
-    public function showOne(int $id): Response
-    {
-        return new Response($this->messages[$id]);
     }
 }
