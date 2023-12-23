@@ -8,11 +8,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/main', name: 'app_main')]
+    private array $messages = [
+        'Hello', 'Hi', 'Bye'
+    ];
+    #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('main/index.html.twig', []);
+    }
+
+    #[Route('/messages/{id}', name: 'show_one')]
+    public function showOne(int $id): Response
+    {
+        return new Response($this->messages[$id]);
     }
 }

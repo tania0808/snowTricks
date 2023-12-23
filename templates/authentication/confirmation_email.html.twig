@@ -1,0 +1,39 @@
+{% apply inline_css %}
+    <style>
+        button, .button {
+            color: #fff !important;
+            background-color: rgb(29, 78, 216);
+            border: 1px solid rgb(29, 78, 216);
+            outline: none;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            width: fit-content;
+            padding: 8px;
+            text-align: center;
+        }
+
+        a, .link {
+            display: block;
+            width: 100%;
+            color: #fff !important;
+            text-decoration: none;
+        }
+    </style>
+
+    <h3>
+        Hey {{ username }},
+    </h3>
+    <p>
+        You have just created an account on Snowtricks. To confirm your email address, please click on the button below.
+    </p>
+    <button class="button">
+        <a class="link" href="{{ signedUrl|raw }}">CONFIRM YOUR EMAIL ADRESS</a>
+    </button>
+    <p>
+        If you did not create an account on Snowtricks, please ignore this email.
+    </p>
+    <p>
+        Keep Rockin'!<br> Snowtricks
+    </p>
+{% endapply %}

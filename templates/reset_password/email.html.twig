@@ -1,0 +1,38 @@
+{% apply inline_css %}
+    <style>
+        button, .button {
+            color: #fff !important;
+            background-color: rgb(29, 78, 216);
+            border: 1px solid rgb(29, 78, 216);
+            outline: none;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            width: fit-content;
+            padding: 8px;
+            text-align: center;
+        }
+
+        a, .link {
+            display: block;
+            width: 100%;
+            color: #fff !important;
+            text-decoration: none;
+        }
+    </style>
+
+    <h3 class="heading">Hi!</h3>
+
+    <p>To reset your password, please visit the following link</p>
+
+    <button class="button">
+        <a class="link" href="{{ url('app_reset_password', {token: resetToken.token}) }}">RESET YOUR PASSWORD</a>
+    </button>
+
+    <p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+    <p>If you did not request the password change, please ignore this email.</p>
+
+    <p>Keep Rockin'!<br> Snowtricks</p>
+
+{% endapply %}
