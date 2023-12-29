@@ -9,7 +9,9 @@
 </div>
 <h1 class="absolute top-[40%] left-24 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Find Your Snowboard Tricks</h1>
 <button type="button" class="absolute bottom-32 right-6 text-white bg-black hover:opacity-80 font-medium rounded-full text-sm p-5 text-center inline-flex items-center me-2">
-    <i class="fa-solid fa-chevron-down"></i>
-    <span class="sr-only">Icon description</span>
+    <a href="#tricks"><i class="fa-solid fa-chevron-down"></i></a>
 </button>
+
+{% include 'posts/posts_list.html.twig' with {'tricks': tricks, 'previous': previous, 'next': next} %}
+
 {% endblock %}

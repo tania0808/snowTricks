@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ trick.name }}{% endblock %}
+
+{% block body %}
+<section class="text-gray-700 body-font overflow-hidden bg-white">
+    <div class="container px-5 pt-24 pb-6 mx-auto">
+        <div class="lg:w-4/5 mx-auto flex flex-wrap">
+            <img alt="ecommerce"
+                 class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
+                 src="https://www.unfe.org/wp-content/uploads/2019/04/SM-placeholder-1024x512.png">
+            <div class="lg:w-1/2 w-full lg:pl-10 mt-6 lg:mt-0">
+                <div class="flex justify-between">
+                    <h2 class="text-sm title-font text-gray-500 tracking-widest">
+                        {{ trick.author.username }}
+                    </h2>
+                    <!-- Dropdown menu start -->
+                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="btn w-10" type="button">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+
+                    <div id="dropdown"
+                         class="ms-6 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
+                            <li>
+                                <a href="/posts/edit/<?php echo $post->getId(); ?>"
+                                   class="block px-4 py-2 hover:bg-gray-100">
+                                    Edit
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/posts/delete/<?php echo $post->getId(); ?>"
+                                   class="block text-red-600 px-4 py-2 hover:bg-gray-100">
+                                    Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+                    <!-- Dropdown menu end -->
+                </div>
+                <h1 class="text-gray-900 text-3xl title-font font-medium mb-1 pt-6">
+                    {{ trick.name }}
+                </h1>
+                <div class="flex mt-2 items-center pb-5 border-b-2 border-gray-200 mb-5"></div>
+                <p class="leading-relaxed text-sm text-gray-400">
+                    {{ trick.createdAt|date('d/m/Y') }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container px-4 lg:w-4/6 pt-6 mx-auto">
+        <span class="title-font font-medium text-2xl text-gray-700">{{ trick.description }}</span>
+    </div>
+</section>
+{% endblock %}

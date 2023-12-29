@@ -107,24 +107,24 @@ class Trick
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $created_at;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updated_at;
 
         return $this;
     }
