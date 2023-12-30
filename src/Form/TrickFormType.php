@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Trick;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -12,7 +13,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Unique;
 
 class TrickFormType extends AbstractType
 {
@@ -36,7 +36,7 @@ class TrickFormType extends AbstractType
                 ],
             ])
             ->add('category', EntityType::class, [
-                'class' => 'App\Entity\Category',
+                'class' => Category::class,
                 'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank([
@@ -49,10 +49,12 @@ class TrickFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'data_class' => Trick::class,
             'constraints' => [
                 new UniqueEntity([
                     'entityClass' => Trick::class,
-                    'fields' => 'name',
+                    'fields' => ['name'],
+                    'message' => 'This trick already exists',
                 ]),
             ]]);
     }

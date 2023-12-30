@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PostController extends AbstractController
 {
@@ -38,6 +39,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/trick/new', name: 'trick_new')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TrickFormType::class);
@@ -45,12 +47,8 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $trick = new Trick();
-            $trick->setName($data['name']);
-            $trick->setDescription($data['description']);
+            $trick = $form->getData();
             $trick->setAuthor($this->getUser());
-            $trick->setCategory($data['category']);
 
             $entityManager->persist($trick);
             $entityManager->flush();
