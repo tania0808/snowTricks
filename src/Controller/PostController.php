@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\Trick;
 use App\Form\TrickFormType;
 use App\Repository\TrickRepository;

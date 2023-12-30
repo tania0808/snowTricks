@@ -29,6 +29,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 55, nullable: true)]
     private ?string $lastName = null;
 
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $bio = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $websiteUrl;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $location;
+
+    #[ORM\Column(type: 'date', nullable: true)]
+    private $dateOfBirth;
+
     #[ORM\Column(length: 55)]
     private string $email;
 
@@ -231,6 +243,64 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->image_name = $image_name;
 
         return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): void
+    {
+        $this->bio = $bio;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWebsiteUrl()
+    {
+        return $this->websiteUrl;
+    }
+
+    /**
+     * @param mixed $websiteUrl
+     */
+    public function setWebsiteUrl($websiteUrl): void
+    {
+        $this->websiteUrl = $websiteUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param mixed $location
+     */
+    public function setLocation($location): void
+    {
+        $this->location = $location;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateOfBirth()
+    {
+        return $this->dateOfBirth;
+    }
+
+    /**
+     * @param mixed $dateOfBirth
+     */
+    public function setDateOfBirth($dateOfBirth): void
+    {
+        $this->dateOfBirth = $dateOfBirth;
     }
 
     /**
