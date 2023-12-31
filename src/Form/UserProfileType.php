@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use function Zenstruck\Foundry\faker;
@@ -36,10 +37,21 @@ class UserProfileType extends AbstractType
             ])
             ->add('email', EmailType::class)
             ->add('imageName', FileType::class, [
+                'label' => 'Profile image (JPG or PNG file)',
+                'mapped' => false,
                 'allow_extra_fields' => true,
-                'label' => 'Profile picture',
                 'required' => false,
                 'row_attr' => ['class' => 'btn form-control bg-gray-50'],
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PNG/JPEG image',
+                    ])
+                ]
             ])
         ;
     }
