@@ -2,23 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Trick;
 use App\Entity\User;
-use App\Form\TrickFormType;
 use App\Form\UserProfileType;
-use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 \Locale::setDefault('en');
 
@@ -38,7 +33,7 @@ class UserController extends AbstractController
 
     #[Route('/profile/{id}/edit', name: 'user_edit')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function edit(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function edit(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         $user = $userRepository->find($user);
         $form = $this->createForm(UserProfileType::class, $user);
@@ -51,27 +46,10 @@ class UserController extends AbstractController
             $profileImageFile = $form->get('imageName')->getData();
 
             if($profileImageFile) {
-                $originalFileName = pathinfo(
-                    $profileImageFile->getClientOriginalName(),
-                    PATHINFO_FILENAME
-                );
-
-                $safeFileName = $slugger->slug($originalFileName);
-                $newFileName = $safeFileName . '-' . uniqid() . '.' . $profileImageFile->guessExtension();
-
-                try {
-                    $profileImageFile->move(
-                        $this->getParameter('profile_image_directory'),
-                        $newFileName
-                    );
-                    if($user->getImageName() !== null) {
-                        unlink($this->getParameter('profile_image_directory') . '/' . $user->getImageName());
-                    }
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'An error occurred during file upload');
-                     return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
+                $newFileName = $fileUploader->upload($profileImageFile);
+                if($user->getImageName() !== null) {
+                    $fileUploader->delete($user->getImageName());
                 }
-
                 $user->setImageName($newFileName);
             }
 

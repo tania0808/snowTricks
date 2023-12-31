@@ -12,7 +12,7 @@
             {% if user.imageName is null %}
                 <img src="{{ asset('images/avatar.png') }}" class="w-40 h-40 border-4 border-white rounded-full" alt="Profile image">
             {% else %}
-                <img src="{{ asset('uploads/profile_images/' ~ user.imageName) }}" class="w-40 h-40 border-4 border-white rounded-full" alt="Profile image">
+                <img src="{{ asset('uploads/images/' ~ user.imageName) }}" class="w-40 h-40 object-cover border-4 border-white rounded-full" alt="Profile image">
             {% endif %}
             <div class="flex items-center space-x-2 mt-2">
                 <p class="text-2xl">{{ user.firstName }} {{ user.lastName }}</p>
