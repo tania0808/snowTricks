@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Media;
 use App\Entity\Trick;
+use App\Form\CommentFormType;
 use App\Form\TrickFormType;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
@@ -25,7 +26,7 @@ class TrickController extends AbstractController
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $trickRepository->getTrickPaginator($offset);
 
-        return $this->render('main/index.html.twig', [
+        return $this->render('main/comment_form.html.twig', [
             'tricks' => $paginator,
             'previous' => $offset - TrickRepository::PAGINATOR_PER_PAGE,
             'next' => min(count($paginator), $offset + TrickRepository::PAGINATOR_PER_PAGE),
@@ -38,9 +39,12 @@ class TrickController extends AbstractController
         $trick = $trickRepository->find($trick);
         $media = $trick->getMedia();
 
+        $form = $this->createForm(CommentFormType::class);
+
         return $this->render('tricks/single_trick.html.twig', [
             'trick' => $trick,
             'media' => $media,
+            'commentForm' => $form->createView(),
         ]);
     }
 

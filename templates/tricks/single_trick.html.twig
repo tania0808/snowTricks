@@ -48,4 +48,6 @@
         <span class="title-font font-medium text-2xl text-gray-700">{{ trick.description }}</span>
     </div>
 </section>
+
+{{ include('tricks/partials/_comments.html.twig', { comments: trick.comments}) }}
 {% endblock %}
