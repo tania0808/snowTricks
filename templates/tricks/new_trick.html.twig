@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addNewVideo = (e) => {
+                const videosUrlCollection = document.querySelector(e.currentTarget.dataset.collection);
+
+                const item = document.createElement('div');
+                item.className = 'mb-5 video-item flex items-center gap-2';
+                item.innerHTML = videosUrlCollection.dataset.prototype.replace(/__name__/g, videosUrlCollection.dataset.index);
+
+                item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
+                videosUrlCollection.appendChild(item);
+
+                videosUrlCollection.dataset.index++;
+            }
+
+            document.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.video-item').remove()));
+            document.querySelectorAll('.btn-new').forEach(btn => btn.addEventListener('click', addNewVideo));
+        });
+    </script>
+{% endblock %}
+{% block title %}Add a new trick{% endblock %}
+
+{% block body %}
+    {% apply inline_css %}
+        <style>
+            input[type=file]::file-selector-button {
+                border: 2px solid rgb(29 78 216);
+                padding: .2em .4em;
+                margin-left: 0;
+                border-radius: .2em;
+                background-color: rgb(29 78 216);
+                transition: 1s;
+            }
+        </style>
+    {% endapply %}
+    {% for flash_error in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <section class="bg-gray-50">
+        <div class="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div class="w-full mt-10 bg-white rounded-lg shadow sm:max-w-md xl:p-0">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                        Add a new trick
+                    </h1>
+
+                    {{ form_start(trickForm, {'attr': {'class': 'max-w-sm mx-auto mt-24', 'enctype': 'multipart/form-data'}}) }}
+                    <div class="mb-5">
+                        {{ form_label(trickForm.name, 'Trick name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(trickForm.name, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Frontflip', 'required': 'required'}}) }}
+                        {% if form_errors(trickForm.name) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(trickForm.name) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-5">
+                        {{ form_label(trickForm.description, 'Description', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(trickForm.description, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': '.... a description for your trick', 'required': 'required'}}) }}
+
+                        {% if form_errors(trickForm.description) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(trickForm.description) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-5">
+                        {{ form_label(trickForm.category, 'Category', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                        {{ form_widget(trickForm.category, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+
+                        {% if form_errors(trickForm.category) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(trickForm.category) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-5">
+                        {{ form_label(trickForm.media, 'Images for this trick', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                        {{ form_widget(trickForm.media, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+
+                        {% if form_errors(trickForm.media) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(trickForm.media) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-5">
+                        {{ form_label(trickForm.videos, 'Videos for this trick', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                        {{ form_widget(trickForm._token) }}
+                        <button data-collection="#videos" type="button" class="btn-new text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">New video</button>
+                        <div
+                             id="videos"
+                             data-prototype="{{ include('tricks/_video.html.twig', {trickForm: trickForm.videos.vars.prototype })|e("html_attr") }}"
+                             data-index="{{ trickForm.videos|length > 0 ? trickForm.videos|last.vars.name + 1 : 0 }}">
+
+                            {% for video in trickForm.videos %}
+                                {{ include('tricks/_video.html.twig', {trickForm: video}) }}
+                            {% endfor %}
+                        </div>
+                        {% if form_errors(trickForm.videos) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(trickForm.videos) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Create</button>
+                    {{ form_end(trickForm, { render_rest: false }) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

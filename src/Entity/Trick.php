@@ -43,13 +43,31 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private Collection $comments;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'trick', cascade: ['persist', 'remove'], targetEntity: Media::class, fetch: 'EAGER')]
     private Collection $media;
+
+    #[ORM\OneToMany(mappedBy: 'trick', cascade: ['persist', 'remove'], targetEntity: Media::class, fetch: 'EAGER')]
+    private Collection $videos;
+
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function setVideos(array $videos): void
+    {
+        $this->videos = new ArrayCollection($videos);
+        foreach ($videos as $video) {
+            $video->setType('video');
+            $video->setTrick($this);
+        }
+    }
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->media = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,7 +188,7 @@ class Trick
     public function addMedium(Media $medium): static
     {
         if (!$this->media->contains($medium)) {
-            $this->media->add($medium);
+            $this->media[] = $medium;
             $medium->setTrick($this);
         }
 
