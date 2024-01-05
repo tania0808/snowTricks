@@ -1,0 +1,22 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') and trick.author.id is same as app.user.id %}
+    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="btn w-10" type="button">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </button>
+{% endif %}
+
+<div id="dropdown"
+     class="ms-6 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+    <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
+        <li>
+            <a href="{{ path('trick_edit', {id: trick.id}) }}"
+               class="block px-4 py-2 hover:bg-gray-100">
+                Edit
+            </a>
+        </li>
+        <li>
+            <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="flex w-full text-red-600 px-4 py-2 hover:bg-gray-100" type="button">
+                Delete
+            </button>
+        </li>
+    </ul>
+</div>

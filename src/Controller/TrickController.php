@@ -36,9 +36,11 @@ class TrickController extends AbstractController
     public function show(Trick $trick, TrickRepository $trickRepository): Response
     {
         $trick = $trickRepository->find($trick);
+        $media = $trick->getMedia();
 
         return $this->render('tricks/single_trick.html.twig', [
             'trick' => $trick,
+            'media' => $media,
         ]);
     }
 
@@ -48,7 +50,6 @@ class TrickController extends AbstractController
     {
         $form = $this->createForm(TrickFormType::class);
 
-        //dd($request);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
@@ -57,7 +58,6 @@ class TrickController extends AbstractController
 
             /** @var UploadedFile[] $profileImageFile */
             $images = $form->get('media')->getData();
-            $videos = $form->get('videos')->getData();
             if($images) {
                 foreach($images as $image) {
                     $newFileName = $fileUploader->upload($image);

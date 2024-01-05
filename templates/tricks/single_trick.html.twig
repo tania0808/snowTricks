@@ -2,45 +2,37 @@
 
 {% block title %}{{ trick.name }}{% endblock %}
 
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getYoutubeEmbedUrl(url) {
+                var videoId = url.split('v=')[1];
+                return 'https://www.youtube.com/embed/' + videoId;
+            }
+        });
+    </script>
+{% endblock %}
 {% block body %}
 <section class="text-gray-700 body-font overflow-hidden bg-white">
     <div class="container px-5 pt-24 pb-6 mx-auto">
         <div class="lg:w-4/5 mx-auto flex flex-wrap">
-            <img alt="ecommerce"
-                 class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
-                 src="https://www.unfe.org/wp-content/uploads/2019/04/SM-placeholder-1024x512.png">
+            <div class="lg:w-1/2 w-full lg:pl-10 mt-6 lg:mt-0">
+                {% if media|length > 0 %}
+                    {{ include('tricks/carousel.html.twig') }}
+                {% else %}
+                    <img src='https://www.unfe.org/wp-content/uploads/2019/04/SM-placeholder-1024x512.png'
+                     alt="Blog Cover" class="object-cover w-full rounded-lg rounded-b-none md:h-56"/>
+                {% endif %}
+            </div>
             <div class="lg:w-1/2 w-full lg:pl-10 mt-6 lg:mt-0">
                 <div class="flex justify-between">
                     <h2 class="text-sm title-font text-gray-500 tracking-widest">
                         {{ trick.author.username }}
                     </h2>
+                    {{ include('tricks/partials/_dropdown.html.twig', { trick: trick }) }}
 
-                    <!-- Dropdown menu start -->
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') and trick.author.id is same as app.user.id %}
-                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="btn w-10" type="button">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    {% endif %}
+                    {{ include('tricks/partials/_modal.html.twig', { id: trick.id }) }}
 
-                    <div id="dropdown"
-                         class="ms-6 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="{{ path('trick_edit', {id: trick.id}) }}"
-                                   class="block px-4 py-2 hover:bg-gray-100">
-                                    Edit
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('trick_delete', {id: trick.id}) }}"
-                                   class="block text-red-600 px-4 py-2 hover:bg-gray-100">
-                                    Delete
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <?php endif; ?>
-                    <!-- Dropdown menu end -->
                 </div>
                 <h1 class="text-gray-900 text-3xl title-font font-medium mb-1 pt-6">
                     {{ trick.name }}

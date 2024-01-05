@@ -206,4 +206,11 @@ class Trick
 
         return $this;
     }
+
+    public function getMainMedia()
+    {
+        return $this->media->filter(function (Media $media) {
+            return $media->getType() === 'image';
+        })->first();
+    }
 }
