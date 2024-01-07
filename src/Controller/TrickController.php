@@ -26,20 +26,22 @@ class TrickController extends AbstractController
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $trickRepository->getTrickPaginator($offset);
 
-        return $this->render('main/comment_form.html.twig', [
+        return $this->render('main/index.html.twig', [
             'tricks' => $paginator,
             'previous' => $offset - TrickRepository::PAGINATOR_PER_PAGE,
             'next' => min(count($paginator), $offset + TrickRepository::PAGINATOR_PER_PAGE),
         ]);
     }
 
-    #[Route('/tricks/{id}', name: 'tricks')]
+    #[Route('/tricks/{id}', name: 'trick_show')]
     public function show(Trick $trick, TrickRepository $trickRepository): Response
     {
         $trick = $trickRepository->find($trick);
         $media = $trick->getMedia();
 
-        $form = $this->createForm(CommentFormType::class);
+        $form = $this->createForm(CommentFormType::class, null, [
+            'trickId' => $trick->getId(),
+        ]);
 
         return $this->render('tricks/single_trick.html.twig', [
             'trick' => $trick,

@@ -52,10 +52,15 @@ class CommentFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Comment::class,
             'method' => 'POST',
-            'action' => $this->router->generate('app_comment_add', [
-                'trick' => $resolver['trickId'],
-            ]),
+            'trickId' => null,
+            'action' => '',
         ]);
+
+        $resolver->setNormalizer('action', function (OptionsResolver $resolver) {
+            return $this->router->generate('app_comment_add', [
+                'trick' => $resolver['trickId'],
+            ]);
+        });
     }
 
 }

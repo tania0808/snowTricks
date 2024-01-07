@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserPasswordType;
 use App\Form\UserProfileType;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -19,6 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserController extends AbstractController
 {
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/profile/{id}', name: 'user_profile')]
     public function show(User $user, UserRepository $userRepository): Response
     {
@@ -35,6 +38,11 @@ class UserController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
+        if($user !== $this->getUser()) {
+            $this->addFlash('error', 'You cannot access this page!');
+            return $this->redirectToRoute('app_home');
+        }
+
         $user = $userRepository->find($user);
         $form = $this->createForm(UserProfileType::class, $user);
 
@@ -61,9 +69,39 @@ class UserController extends AbstractController
         }
 
 
-        return $this->render('profile/edit_profile.html.twig', [
+        return $this->render('profile/_profile-form.html.twig', [
             'userForm' => $form->createView(),
         ]);
     }
 
+    #[Route('/profile/{id}/edit/password', name: 'user_edit_password')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function editPassword(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        if ($user !== $this->getUser()) {
+            $this->addFlash('error', 'You cannot access this page!');
+            return $this->redirectToRoute('app_home');
+        }
+
+        $user = $userRepository->find($user);
+
+        $passwordForm = $this->createForm(UserPasswordType::class);
+
+        $passwordForm->handleRequest($request);
+
+        if($passwordForm->isSubmitted() && $passwordForm->isValid()) {
+            $user->setPassword($userPasswordHasher->hashPassword(
+                $user,
+                $passwordForm->get('newPassword')->getData()
+            ));
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Profile information modified!');
+            return $this->redirectToRoute('user_profile', ['id' => $user->getId()]);
+        }
+        return $this->render('profile/_password-form.html.twig', [
+            'passwordForm' => $passwordForm->createView(),
+        ]);
+    }
 }

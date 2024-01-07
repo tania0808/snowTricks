@@ -1,0 +1,20 @@
+{% embed 'shared/_tabs.html.twig' %}
+    {% block tabs %}
+        {% embed 'shared/_tab.html.twig' with {route: 'user_edit'} %}
+            {% block content %}
+                Profile
+            {% endblock %}
+            {% block path %}
+                {{ path('user_edit', {id: app.user.id}) }}
+            {% endblock %}
+        {% endembed %}
+        {% embed 'shared/_tab.html.twig' with {route: 'user_edit_password'} %}
+            {% block content %}
+                Password
+            {% endblock %}
+            {% block path %}
+                {{ path('user_edit_password', {id: app.user.id}) }}
+            {% endblock %}
+        {% endembed %}
+    {% endblock %}
+{% endembed %}
