@@ -1,0 +1,14 @@
+{% for trick in tricks %}
+    {{ include('tricks/partials/_card.html.twig', { trick: trick }) }}
+{% endfor %}
+
+<!-- Pagination -->
+<div class="my-6 w-full flex justify-center	gap-4">
+    {% if previous >= 0 %}
+        <a href="#" onclick="loadTricks({{ previous }}); return false;">Previous</a>
+    {% endif %}
+
+    {% if next < tricks|length %}
+        <a href="#" onclick="loadTricks({{ next }}); return false;">Next</a>
+    {% endif %}
+</div>

@@ -32,7 +32,7 @@ class CommentController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Commented !');
-            return $this->redirectToRoute('tricks', ['id' => $trick->getId()]);
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
 
         return $this->redirectToRoute('app_home');

@@ -11,20 +11,36 @@
         <!-- Pagination -->
         <div class="my-6 w-full flex justify-center	">
             {% if previous >= 0 %}
-                <a href="{{ path('app_home', { offset: previous }) }}#tricks"  onclick="scrollToTricks()" class="flex w-fit items-center justify-center px-3 h-8 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                <a href="#" onclick="loadTricks({{ previous }}); return false;">Previous</a>
             {% endif %}
+
             {% if next < tricks|length %}
-                <a href="{{ path('app_home', { offset: next }) }}#tricks"  onclick="scrollToTricks()" class="flex w-fit items-center justify-center px-3 h-8 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                <a href="#" onclick="loadTricks({{ next }}); return false;">Next</a>
             {% endif %}
         </div>
+
+        <script>
+            function loadTricks(offset) {
+                const url = '{{ path('tricks_partial', {'offset': '__offset__'})|replace({'__offset__': ''}) }}' + offset;
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('tricks').innerHTML = html;
+                        scrollToTricks();
+                    })
+                    .catch(error => {
+                        console.error('Error loading tricks:', error);
+                    });
+            }
+
+            function scrollToTricks() {
+                var tricksElement = document.getElementById('tricks');
+                if (tricksElement) {
+                    tricksElement.scrollIntoView({ behavior: 'instant' });
+                }
+            }
+        </script>
     </section>
     {% endif %}
 {% endblock %}
-<script>
-    function scrollToTricks() {
-        var tricksElement = document.getElementById('tricks');
-        if (tricksElement) {
-            tricksElement.scrollIntoView({ behavior: 'instant' });
-        }
-    }
-</script>

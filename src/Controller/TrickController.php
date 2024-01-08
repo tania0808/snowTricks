@@ -20,6 +20,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TrickController extends AbstractController
 {
+    /**
+     * @Route("/tricks-partial/{offset}", name="tricks_partial")
+     */
+    public function tricksPartial(Request $request, TrickRepository $trickRepository, int $offset): Response
+    {
+        $paginator = $trickRepository->getTrickPaginator($offset);
+
+        return $this->render('tricks/_tricks_partial.html.twig', [
+            'tricks' => $paginator,
+            'previous' => $offset - TrickRepository::PAGINATOR_PER_PAGE,
+            'next' => $offset + TrickRepository::PAGINATOR_PER_PAGE,
+        ]);
+    }
     #[Route('/', name: 'app_home')]
     public function index(Request $request, TrickRepository $trickRepository): Response
     {
@@ -29,7 +42,7 @@ class TrickController extends AbstractController
         return $this->render('main/index.html.twig', [
             'tricks' => $paginator,
             'previous' => $offset - TrickRepository::PAGINATOR_PER_PAGE,
-            'next' => min(count($paginator), $offset + TrickRepository::PAGINATOR_PER_PAGE),
+            'next' => $offset + TrickRepository::PAGINATOR_PER_PAGE,
         ]);
     }
 
