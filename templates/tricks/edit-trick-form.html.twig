@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit the trick{% endblock %}
+
+{% block body %}
+    {% apply inline_css %}
+        <style>
+            input[type=file]::file-selector-button {
+                border: 2px solid rgb(29 78 216);
+                padding: .2em .4em;
+                margin-left: 0;
+                border-radius: .2em;
+                background-color: rgb(29 78 216);
+                transition: 1s;
+            }
+        </style>
+    {% endapply %}
+    {% for flash_error in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <section class="bg-gray-50 py-6">
+        {{ include('tricks/partials/_trick_edit_header.html.twig', {'trick': trick}) }}
+        <div class="flex flex-col max-w-screen-xl px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div class="w-full mt-10 bg-white rounded-lg shadow sm:max-w-xl xl:p-0">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                        Edit the trick
+                    </h1>
+
+                    {{ form_start(editTrickForm, {'attr': {'class': 'max-w-lg mt-24', 'enctype': 'multipart/form-data'}}) }}
+                    {{ form_widget(editTrickForm._token) }}
+                    <div class="mb-5">
+                        {{ form_label(editTrickForm.name, 'Trick name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(editTrickForm.name, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Frontflip', 'required': 'required'}}) }}
+                        {% if form_errors(editTrickForm.name) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(editTrickForm.name) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-5">
+                        {{ form_label(editTrickForm.description, 'Description', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_widget(editTrickForm.description, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': '.... a description for your trick', 'required': 'required'}}) }}
+
+                        {% if form_errors(editTrickForm.description) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(editTrickForm.description) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-5">
+                        {{ form_label(editTrickForm.category, 'Category', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                        {{ form_widget(editTrickForm.category, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+
+                        {% if form_errors(editTrickForm.category) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(editTrickForm.category) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-5">
+                        {{ form_label(editTrickForm.media, 'Images for this trick', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                        {{ form_widget(editTrickForm.media, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+
+                        {% if form_errors(editTrickForm.media) %}
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                <span class="font-medium">{{ form_errors(editTrickForm.media) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Create</button>
+                    {{ form_end(editTrickForm, { render_rest: false }) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

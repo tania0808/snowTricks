@@ -35,7 +35,11 @@ class CommentController extends AbstractController
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
 
-        return $this->redirectToRoute('app_home');
+        return $this->render('tricks/single_trick.html.twig', [
+            'trick' => $trick,
+            'media' => $trick->getMedia(),
+            'commentForm' => $form->createView(),
+        ]);
     }
 
     #[Route('/{trick}/comment/delete/{id}', name: 'comment_delete')]

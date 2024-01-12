@@ -2,12 +2,12 @@
     {{ form_start(commentForm, {'attr': {'class': 'mb-6 max-w-3xl'}}) }}
     <div class="py-2 px-4 mb-2 bg-white rounded-lg rounded-t-lg border border-gray-200">
         {{ form_widget(commentForm.message, {'attr': {'class': 'px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none', 'placeholder': 'Write a comment...', 'rows': '6', 'required': 'required'}}) }}
-        {% if form_errors(commentForm.message) %}
-            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <span class="font-medium">{{ form_errors(commentForm.message) }}</span>
-            </div>
-        {% endif %}
     </div>
+    {% if form_errors(commentForm.message) %}
+        <div class="px-4 py-2 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">{{ form_errors(commentForm.message) }}</span>
+        </div>
+    {% endif %}
 
     <button type="submit" class="mt-2 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">Create</button>
 

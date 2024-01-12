@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Media;
 use App\Entity\Trick;
 use App\Form\CommentFormType;
+use App\Form\EditTrickFormType;
 use App\Form\TrickFormType;
+use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,6 +23,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TrickController extends AbstractController
 {
     /**
+     * @Route("/comments-partial/{offset}", name="comments_partial")
+     */
+    public function commentsPartial(Request $request, CommentRepository $commentRepository, int $offset): Response
+    {
+        $paginator = $commentRepository->getCommentPaginator($offset);
+
+        return $this->render('comment/_comments_partial.html.twig', [
+            'comments' => $paginator,
+            'previous' => $offset - $commentRepository::PAGINATOR_PER_PAGE,
+            'next' => $offset + $commentRepository::PAGINATOR_PER_PAGE,
+        ]);
+    }
+    /**
      * @Route("/tricks-partial/{offset}", name="tricks_partial")
      */
     public function tricksPartial(Request $request, TrickRepository $trickRepository, int $offset): Response
@@ -29,8 +44,8 @@ class TrickController extends AbstractController
 
         return $this->render('tricks/_tricks_partial.html.twig', [
             'tricks' => $paginator,
-            'previous' => $offset - TrickRepository::PAGINATOR_PER_PAGE,
-            'next' => $offset + TrickRepository::PAGINATOR_PER_PAGE,
+            'previous' => $offset - $trickRepository::PAGINATOR_PER_PAGE,
+            'next' => $offset + $trickRepository::PAGINATOR_PER_PAGE,
         ]);
     }
     #[Route('/', name: 'app_home')]
@@ -47,10 +62,13 @@ class TrickController extends AbstractController
     }
 
     #[Route('/tricks/{id}', name: 'trick_show')]
-    public function show(Trick $trick, TrickRepository $trickRepository): Response
+    public function show(Request $request, Trick $trick, TrickRepository $trickRepository, CommentRepository $commentRepository): Response
     {
         $trick = $trickRepository->find($trick);
         $media = $trick->getMedia();
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $commentRepository->getCommentPaginator($offset);
+
 
         $form = $this->createForm(CommentFormType::class, null, [
             'trickId' => $trick->getId(),
@@ -59,7 +77,10 @@ class TrickController extends AbstractController
         return $this->render('tricks/single_trick.html.twig', [
             'trick' => $trick,
             'media' => $media,
+            'comments' => $paginator,
             'commentForm' => $form->createView(),
+            'previous' => $offset - $commentRepository::PAGINATOR_PER_PAGE,
+            'next' => $offset + $commentRepository::PAGINATOR_PER_PAGE,
         ]);
     }
 
@@ -117,8 +138,55 @@ class TrickController extends AbstractController
 
     #[Route('/trick/edit/{id}', name: 'trick_edit')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function edit(Trick $trick, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Trick $trick, Request $request, EntityManagerInterface $entityManager, TrickRepository $trickRepository): Response
     {
-        dd($trick);
+        if($trick->getAuthor() !== $this->getUser()) {
+            $this->addFlash('error', 'You cannot access this page!');
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
+
+        $user = $trickRepository->find($trick);
+        $form = $this->createForm(EditTrickFormType::class, $user);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $trick = $form->getData();
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Trick information modified!');
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
+
+        return $this->render('tricks/edit-trick-form.html.twig', [
+            'editTrickForm' => $form->createView(),
+            'trick' => $trick,
+        ]);
+    }
+
+    #[Route('/media/edit/{id}', name: 'trick_media_edit')]
+    public function edit_media(Trick $trick)
+    {
+        return $this->render('tricks/edit_media.html.twig', [
+            'trick' => $trick,
+        ]);
+    }
+
+    #[Route('/media/delete/{id}', name: 'trick_media_delete')]
+    public function delete_media(Media $media, EntityManagerInterface $entityManager)
+    {
+        dd($media->getId());
+        if($media->getTrick()->getAuthor() !== $this->getUser()) {
+            $this->addFlash('error', 'You cannot delete this media!');
+            return $this->redirectToRoute('app_home');
+        }
+
+        $entityManager->remove($media);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Media deleted!');
+        return $this->redirectToRoute('trick_edit', ['id' => $media->getTrick()->getId()]);
+
     }
 }

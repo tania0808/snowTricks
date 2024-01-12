@@ -1,0 +1,36 @@
+<article class="p-6 text-base bg-white rounded-lg">
+    <footer class="flex justify-between items-center mb-2">
+        <div class="flex items-center">
+            <p class="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
+                <img
+                        class="mr-2 w-6 h-6 rounded-full"
+                        src="https://static.thenounproject.com/png/354384-200.png"
+                        alt="Michael Gough">
+                {{ comment.author.username }}
+            </p>
+            <p class="text-sm text-gray-600">
+                {{ comment.createdAt|date('d/m/Y') }}
+            </p>
+        </div>
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') and comment.author.id is same as app.user.id %}
+            <button id="{{ 'dropdownCommentButton' ~ comment.id }}" data-dropdown-toggle="{{ 'dropdownComment' ~ comment.id }}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <span class="sr-only">Comment settings</span>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="{{ 'dropdownComment' ~ comment.id }}"
+                 class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow">
+                <ul class="py-1 text-sm text-gray-700"
+                    aria-labelledby="dropdownMenuIconHorizontalButton">
+                    <li>
+                        <a href="{{ path('comment_delete', {id: comment.id, 'trick': comment.trick.id}) }}" class="block text-red-600 px-4 py-2 hover:bg-gray-100">
+                            Delete
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </footer>
+    <p class="text-gray-500">{{ comment.message  }}</p>
+</article>

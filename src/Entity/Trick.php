@@ -40,7 +40,7 @@ class Trick
     #[Gedmo\Timestampable(on: 'update')]
     private DateTimeImmutable $updatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, cascade: ['remove'])]
     private Collection $comments;
 
     #[ORM\OneToMany(mappedBy: 'trick', cascade: ['persist', 'remove'], targetEntity: Media::class, fetch: 'EAGER')]

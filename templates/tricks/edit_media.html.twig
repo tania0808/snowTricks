@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit the trick{% endblock %}
+
+{% block body %}
+    {% apply inline_css %}
+        <style>
+            input[type=file]::file-selector-button {
+                border: 2px solid rgb(29 78 216);
+                padding: .2em .4em;
+                margin-left: 0;
+                border-radius: .2em;
+                background-color: rgb(29 78 216);
+                transition: 1s;
+            }
+        </style>
+    {% endapply %}
+    {% for flash_error in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <section class="bg-gray-50 py-6 h-screen">
+        {{ include('tricks/partials/_trick_edit_header.html.twig', {'trick': trick}) }}
+        <div class="w-full max-w-screen-xl mx-auto">
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                Edit the trick's media
+            </h1>
+
+            <div class="container pt-2 pb-4 mx-auto grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                {{ include('tricks/partials/_modal.html.twig', {deleteRoute: 'trick_media_delete'}) }}
+                {% for media in trick.media %}
+                    {% if media.type == 'image' %}
+                        <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
+                            {{ include('shared/_action_buttons.html.twig', {mediaId: media.id, deleteRoute: 'trick_media_delete', editRoute: 'trick_media_edit'}) }}
+                            <a href="#">
+                                <img src="{{ asset('uploads/images/' ~ media.name) }}" alt="Blog Cover" class="rounded-t-lg h-[200px] object-cover"/>
+                            </a>
+                        </div>
+                    {% elseif media.type == 'video' %}
+                        {% set videoId = media.name | split('v=') | last %}
+                        <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
+                            {{ include('shared/_action_buttons.html.twig', {mediaId: media.id, deleteRoute: 'trick_media_delete', editRoute: 'trick_media_edit'}) }}
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/{{ videoId }}"></iframe>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addOpenModal = (event) => {
+                const modal = document.querySelector('#popup-modal');
+                const deleteButton = event.currentTarget;
+                const dataIdValue = deleteButton.getAttribute('data-id');
+
+                console.log(dataIdValue);
+
+                // Assuming you want to update the href of a link inside the modal with id 'delete-link'
+                const deleteLink = document.querySelector('#delete-link');
+                if (deleteLink) {
+                    deleteLink.href = dataIdValue;
+                }
+
+                // Assuming your modal has an input field with id 'media-id-input'
+                const mediaIdInput = document.querySelector('#media-id-input');
+                if (mediaIdInput) {
+                    mediaIdInput.value = dataIdValue;
+                }
+
+            }
+
+            document.querySelectorAll('#delete-button').forEach(btn => btn.addEventListener('click', addOpenModal));
+        });
+    </script>
+{% endblock %}

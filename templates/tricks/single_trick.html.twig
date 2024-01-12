@@ -14,39 +14,54 @@
 {% endblock %}
 {% block body %}
 <section class="text-gray-700 body-font overflow-hidden bg-white">
-    <div class="container px-5 pt-24 pb-6 mx-auto">
-        <div class="lg:w-4/5 mx-auto flex flex-wrap">
-            <div class="lg:w-1/2 w-full lg:pl-10 mt-6 lg:mt-0">
-                {% if media|length > 0 %}
-                    {{ include('tricks/carousel.html.twig') }}
-                {% else %}
-                    <img src='https://www.unfe.org/wp-content/uploads/2019/04/SM-placeholder-1024x512.png'
+    <div class="container px-4 lg:w-4/6 py-6 mx-auto mb-10 relative">
+        <div class="absolute top-10 right-6">
+            {{ include('tricks/partials/_dropdown.html.twig', { trick: trick }) }}
+
+            {{ include('tricks/partials/_modal.html.twig', { id: trick.id }) }}
+        </div>
+
+        <div class="w-full">
+            {% if trick.media|length %}
+                <img src="{{ asset('uploads/images/' ~ trick.media[0].name) }}"
+                     alt="Trick Cover" class="object-cover w-full h-[400px] rounded-lg rounded-b-none"/>
+            {% else %}
+                <img src='https://www.unfe.org/wp-content/uploads/2019/04/SM-placeholder-1024x512.png'
                      alt="Blog Cover" class="object-cover w-full rounded-lg rounded-b-none md:h-56"/>
+            {% endif %}
+        </div>
+        <div class="container pt-2 pb-4 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+            {% for media in trick.media|slice(1) %}
+                {% if media.type == 'image' %}
+                    <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <a href="#">
+                            <img src="{{ asset('uploads/images/' ~ media.name) }}" alt="Blog Cover" class="rounded-t-lg h-[200px]"/>
+                        </a>
+                    </div>
+                {% elseif media.type == 'video' %}
+                    {% set videoId = media.name | split('v=') | last %}
+                    <iframe width="100%" height="200" src="https://www.youtube.com/embed/{{ videoId }}"></iframe>
+                    </iframe>
                 {% endif %}
-            </div>
-            <div class="lg:w-1/2 w-full lg:pl-10 mt-6 lg:mt-0">
-                <div class="flex justify-between">
-                    <h2 class="text-sm title-font text-gray-500 tracking-widest">
-                        {{ trick.author.username }}
-                    </h2>
-                    {{ include('tricks/partials/_dropdown.html.twig', { trick: trick }) }}
+            {% endfor %}
 
-                    {{ include('tricks/partials/_modal.html.twig', { id: trick.id }) }}
-
-                </div>
-                <h1 class="text-gray-900 text-3xl title-font font-medium mb-1 pt-6">
-                    {{ trick.name }}
-                </h1>
-                <div class="flex mt-2 items-center pb-5 border-b-2 border-gray-200 mb-5"></div>
-                <p class="leading-relaxed text-sm text-gray-400">
-                    {{ trick.createdAt|date('d/m/Y') }}
-                </p>
-            </div>
         </div>
     </div>
     <div class="container px-4 lg:w-4/6 py-6 mx-auto mb-10">
         <span class="title-font font-medium text-2xl text-gray-700">{{ trick.description }}</span>
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+        <div class="flex justify-between">
+            <h2 class="text-sm title-font text-gray-500 tracking-widest">
+                {{ trick.author.username }}
+            </h2>
+            <p class="leading-relaxed text-sm text-gray-400">
+                Category: {{ trick.category.name }}
+            </p>
+            <p class="leading-relaxed text-sm text-gray-400">
+                {{ trick.createdAt|date('d/m/Y') }}
+            </p>
+        </div>
     </div>
 </section>
-{{ include('tricks/partials/_comments.html.twig', { comments: trick.comments}) }}
+{{ include('tricks/partials/_comments.html.twig', { comments: comments, previous: previous, next: next}) }}
 {% endblock %}
