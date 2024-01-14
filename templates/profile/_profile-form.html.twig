@@ -23,109 +23,109 @@
     </h1>
 
     {{ form_start(userForm, {'attr': {'class': 'max-w-4xl mt-24'}}) }}
-    <div class="flex gap-10 flex-col sm:flex-row">
-        <div>
-            <div class="mb-5">
-                {{ form_label(userForm.username, 'Your username', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                {{ form_widget(userForm.username, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'jane_doe'}}) }}
-                {% if form_errors(userForm.username) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.username) }}</span>
-                    </div>
-                {% endif %}
+        <div class="flex gap-10 flex-col sm:flex-row">
+            <div>
+                <div class="mb-5">
+                    {{ form_label(userForm.username, 'Your username', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    {{ form_widget(userForm.username, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'jane_doe'}}) }}
+                    {% if form_errors(userForm.username) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.username) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-5">
+                    {{ form_label(userForm.firstName, 'Your first name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    {{ form_widget(userForm.firstName, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Jane'}}) }}
+
+                    {% if form_errors(userForm.firstName) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.firstName) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-5">
+                    {{ form_label(userForm.lastName, 'Your last name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                    {{ form_widget(userForm.lastName, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Doe'}}) }}
+
+                    {% if form_errors(userForm.lastName) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.lastName) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-5">
+                    {{ form_label(userForm.email, 'Your email', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                    {{ form_widget(userForm.email, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+
+                    {% if form_errors(userForm.email) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.email) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
 
-            <div class="mb-5">
-                {{ form_label(userForm.firstName, 'Your first name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                {{ form_widget(userForm.firstName, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Jane'}}) }}
+            <div>
+                <div class="mb-5">
+                    {{ form_label(userForm.websiteUrl, 'Your website url', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                    {{ form_widget(userForm.websiteUrl, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
 
-                {% if form_errors(userForm.firstName) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.firstName) }}</span>
-                    </div>
-                {% endif %}
-            </div>
-            <div class="mb-5">
-                {{ form_label(userForm.lastName, 'Your last name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
-                {{ form_widget(userForm.lastName, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Doe'}}) }}
+                    {% if form_errors(userForm.websiteUrl) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.websiteUrl) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-5">
+                    {{ form_label(userForm.location, 'Your location', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                    {{ form_widget(userForm.location, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
 
-                {% if form_errors(userForm.lastName) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.lastName) }}</span>
-                    </div>
-                {% endif %}
-            </div>
+                    {% if form_errors(userForm.location) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.location) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-5">
+                    {{ form_label(userForm.dateOfBirth, 'Your date of birth', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
 
-            <div class="mb-5">
-                {{ form_label(userForm.email, 'Your email', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-                {{ form_widget(userForm.email, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+                    {{ form_widget(userForm.dateOfBirth, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Select date'}}) }}
 
-                {% if form_errors(userForm.email) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.email) }}</span>
-                    </div>
-                {% endif %}
+                    {% if form_errors(userForm.dateOfBirth) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.dateOfBirth) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-5">
+                    {{ form_label(userForm.imageName, 'Your avatar', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                    {{ form_widget(userForm.imageName, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+
+                    {% if form_errors(userForm.imageName) %}
+                        <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <span class="font-medium">{{ form_errors(userForm.imageName) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
-        <div>
-            <div class="mb-5">
-                {{ form_label(userForm.websiteUrl, 'Your website url', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-                {{ form_widget(userForm.websiteUrl, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+        <div class="mb-5 max-w-xl">
+            {{ form_label(userForm.bio, 'Your bio', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+            {{ form_widget(userForm.bio, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
 
-                {% if form_errors(userForm.websiteUrl) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.websiteUrl) }}</span>
-                    </div>
-                {% endif %}
-            </div>
-            <div class="mb-5">
-                {{ form_label(userForm.location, 'Your location', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-                {{ form_widget(userForm.location, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
-
-                {% if form_errors(userForm.location) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.location) }}</span>
-                    </div>
-                {% endif %}
-            </div>
-            <div class="mb-5">
-                {{ form_label(userForm.dateOfBirth, 'Your date of birth', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-
-                {{ form_widget(userForm.dateOfBirth, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Select date'}}) }}
-
-                {% if form_errors(userForm.dateOfBirth) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.dateOfBirth) }}</span>
-                    </div>
-                {% endif %}
-            </div>
-
-            <div class="mb-5">
-                {{ form_label(userForm.imageName, 'Your avatar', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-                {{ form_widget(userForm.imageName, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
-
-                {% if form_errors(userForm.imageName) %}
-                    <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        <span class="font-medium">{{ form_errors(userForm.imageName) }}</span>
-                    </div>
-                {% endif %}
-            </div>
+            {% if form_errors(userForm.bio) %}
+                <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                    <span class="font-medium">{{ form_errors(userForm.bio) }}</span>
+                </div>
+            {% endif %}
         </div>
-    </div>
 
-    <div class="mb-5 max-w-xl">
-        {{ form_label(userForm.bio, 'Your bio', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
-        {{ form_widget(userForm.bio, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
-
-        {% if form_errors(userForm.bio) %}
-            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                <span class="font-medium">{{ form_errors(userForm.bio) }}</span>
-            </div>
-        {% endif %}
-    </div>
-
-    <button type="submit" class="text-white mb-10 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Edit</button>
+        <button type="submit" class="text-white mb-10 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Edit</button>
     {{ form_end(userForm) }}
 </div>
 {% endblock %}

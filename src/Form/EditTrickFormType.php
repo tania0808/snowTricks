@@ -59,6 +59,14 @@ class EditTrickFormType extends AbstractType
                 'required' => false,
                 'row_attr' => ['class' => 'btn form-control bg-gray-50'],
             ])
+            ->add('videos', CollectionType::class, [
+                'entry_type' => MediaUrlType::class,
+                'entry_options' => ['label' => false],
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'mapped' => false,
+            ])
         ;
     }
 

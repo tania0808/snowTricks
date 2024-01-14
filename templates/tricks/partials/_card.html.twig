@@ -7,11 +7,11 @@
                 </button>
             </a>
 
-            <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+            <button data-id="{{ trick.id }}" id="delete-button" onclick="addOpenModal()" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                 <i class="fa-solid fa-trash"></i>
             </button>
 
-            {{ include('tricks/partials/_modal.html.twig', { id: trick.id }) }}
+            {{ include('tricks/partials/_modal.html.twig', { id: trick.id, deleteRoute: 'trick_delete' }) }}
         </div>
     {% endif %}
 

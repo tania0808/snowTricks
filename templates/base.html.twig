@@ -13,7 +13,25 @@
         {% endblock %}
 
         {% block javascripts %}
-            <script src="{{ asset('js/app.js') }}"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const addNewVideo = (e) => {
+                        const videosUrlCollection = document.querySelector(e.currentTarget.dataset.collection);
+
+                        const item = document.createElement('div');
+                        item.className = 'mb-5 video-item flex items-center gap-2';
+                        item.innerHTML = videosUrlCollection.dataset.prototype.replace(/__name__/g, videosUrlCollection.dataset.index);
+
+                        item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
+                        videosUrlCollection.appendChild(item);
+
+                        videosUrlCollection.dataset.index++;
+                    }
+
+                    document.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.video-item').remove()));
+                    document.querySelectorAll('.btn-new').forEach(btn => btn.addEventListener('click', addNewVideo));
+                });
+            </script>
         {% endblock %}
     </head>
     <body>

@@ -6,6 +6,7 @@ use App\Repository\TrickRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -51,7 +52,11 @@ class Trick
 
     public function getVideos(): Collection
     {
-        return $this->videos;
+        // Use a Criteria object to filter the collection based on the 'type' property
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('type', 'video'));
+
+        // Apply the criteria and return the filtered collection
+        return $this->videos->matching($criteria);
     }
 
     public function setVideos(array $videos): void

@@ -2,7 +2,7 @@
     {% block tabs %}
         {% embed 'shared/_tab.html.twig' with {route: 'trick_edit'} %}
             {% block content %}
-                Tricks infos
+                Trick infos
             {% endblock %}
             {% block path %}
                 {{ path('trick_edit', {id: trick.id}) }}
@@ -10,7 +10,7 @@
         {% endembed %}
         {% embed 'shared/_tab.html.twig' with {route: 'trick_media_edit'} %}
             {% block content %}
-                Media
+                Manage media
             {% endblock %}
             {% block path %}
                 {{ path('trick_media_edit', {id: trick.id}) }}

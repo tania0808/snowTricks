@@ -15,3 +15,25 @@
 {% include 'tricks/tricks_list.html.twig' with {'tricks': tricks, 'previous': previous, 'next': next} %}
 
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addOpenModal = (event) => {
+                const deleteButton = event.currentTarget;
+                const dataIdValue = deleteButton.getAttribute('data-id');
+
+                const deleteLink = document.querySelector('#delete-link');
+                if (deleteLink) {
+                    deleteLink.href = '/trick/delete/' + dataIdValue;
+                }
+
+                const mediaIdInput = document.querySelector('#media-id-input');
+                if (mediaIdInput) {
+                    mediaIdInput.value = dataIdValue;
+                }
+            }
+            document.querySelectorAll('#delete-button').forEach(btn => btn.addEventListener('click', addOpenModal));
+        });
+    </script>
+{% endblock %}

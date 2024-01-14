@@ -1,25 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const addNewVideo = (e) => {
-                const videosUrlCollection = document.querySelector(e.currentTarget.dataset.collection);
 
-                const item = document.createElement('div');
-                item.className = 'mb-5 video-item flex items-center gap-2';
-                item.innerHTML = videosUrlCollection.dataset.prototype.replace(/__name__/g, videosUrlCollection.dataset.index);
-
-                item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
-                videosUrlCollection.appendChild(item);
-
-                videosUrlCollection.dataset.index++;
-            }
-
-            document.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.video-item').remove()));
-            document.querySelectorAll('.btn-new').forEach(btn => btn.addEventListener('click', addNewVideo));
-        });
-    </script>
-{% endblock %}
 {% block title %}Add a new trick{% endblock %}
 
 {% block body %}
@@ -89,7 +69,7 @@
                         {% endif %}
                     </div>
                     <div class="mb-5">
-                        {{ form_label(trickForm.videos, 'Videos for this trick', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
+                        {{ form_label(trickForm.videos, 'Videos for this trick (please include only YouTube links)', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
                         {{ form_widget(trickForm._token) }}
                         <button data-collection="#videos" type="button" class="btn-new text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">New video</button>
                         <div

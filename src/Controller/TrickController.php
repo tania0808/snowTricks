@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,7 +43,7 @@ class TrickController extends AbstractController
     {
         $paginator = $trickRepository->getTrickPaginator($offset);
 
-        return $this->render('tricks/_tricks_partial.html.twig', [
+        return $this->render('tricks/partials/_tricks_partial.html.twig', [
             'tricks' => $paginator,
             'previous' => $offset - $trickRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + $trickRepository::PAGINATOR_PER_PAGE,
@@ -96,17 +97,7 @@ class TrickController extends AbstractController
             $trick = $form->getData();
             $trick->setAuthor($this->getUser());
 
-            /** @var UploadedFile[] $profileImageFile */
-            $images = $form->get('media')->getData();
-            if($images) {
-                foreach($images as $image) {
-                    $newFileName = $fileUploader->upload($image);
-                    $media = new Media();
-                    $media->setName($newFileName);
-                    $media->setType('image');
-                    $trick->addMedium($media);
-                }
-            }
+            $this->uploadImages($form, $fileUploader, $trick);
 
             $entityManager->persist($trick);
             $entityManager->flush();
@@ -124,10 +115,7 @@ class TrickController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(Trick $trick, EntityManagerInterface $entityManager): Response
     {
-        if($trick->getAuthor() !== $this->getUser()) {
-            $this->addFlash('error', 'You cannot delete this trick!');
-            return $this->redirectToRoute('app_home');
-        }
+        $this->guardAgainstUnauthorizedUser($trick);
 
         $entityManager->remove($trick);
         $entityManager->flush();
@@ -138,12 +126,9 @@ class TrickController extends AbstractController
 
     #[Route('/trick/edit/{id}', name: 'trick_edit')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function edit(Trick $trick, Request $request, EntityManagerInterface $entityManager, TrickRepository $trickRepository): Response
+    public function edit(Trick $trick, Request $request, EntityManagerInterface $entityManager, TrickRepository $trickRepository, FileUploader $fileUploader): Response
     {
-        if($trick->getAuthor() !== $this->getUser()) {
-            $this->addFlash('error', 'You cannot access this page!');
-            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
-        }
+        $this->guardAgainstUnauthorizedUser($trick);
 
         $user = $trickRepository->find($trick);
         $form = $this->createForm(EditTrickFormType::class, $user);
@@ -151,7 +136,10 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $this->uploadVideos($form, $trick);
             $trick = $form->getData();
+            $this->uploadImages($form, $fileUploader, $trick);
+
             $entityManager->persist($trick);
             $entityManager->flush();
 
@@ -160,7 +148,7 @@ class TrickController extends AbstractController
         }
 
         return $this->render('tricks/edit-trick-form.html.twig', [
-            'editTrickForm' => $form->createView(),
+            'trickForm' => $form->createView(),
             'trick' => $trick,
         ]);
     }
@@ -174,12 +162,15 @@ class TrickController extends AbstractController
     }
 
     #[Route('/media/delete/{id}', name: 'trick_media_delete')]
-    public function delete_media(Media $media, EntityManagerInterface $entityManager)
+    public function delete_media(Media $media, EntityManagerInterface $entityManager, FileUploader $fileUploader)
     {
-        dd($media->getId());
         if($media->getTrick()->getAuthor() !== $this->getUser()) {
             $this->addFlash('error', 'You cannot delete this media!');
             return $this->redirectToRoute('app_home');
+        }
+
+        if($media->getType() === 'image') {
+            $fileUploader->delete($media->getName());
         }
 
         $entityManager->remove($media);
@@ -187,6 +178,41 @@ class TrickController extends AbstractController
 
         $this->addFlash('success', 'Media deleted!');
         return $this->redirectToRoute('trick_edit', ['id' => $media->getTrick()->getId()]);
+    }
 
+    private function uploadVideos($form, $trick) {
+        $videos = $form->get('videos')->getData();
+        if($videos) {
+            foreach($videos as $video) {
+                $media = new Media();
+                $media->setName($video->getName());
+                $media->setType('video');
+                $trick->addMedium($media);
+            }
+        }
+    }
+    private function uploadImages($form, $fileUploader, $trick) {
+        /** @var UploadedFile[] $profileImageFile */
+        $images = $form->get('media')->getData();
+        if($images) {
+            foreach($images as $image) {
+                $newFileName = $fileUploader->upload($image);
+                $media = new Media();
+                $media->setName($newFileName);
+                $media->setType('image');
+                $trick->addMedium($media);
+            }
+        }
+    }
+
+
+
+    private function guardAgainstUnauthorizedUser(Trick $trick): ?RedirectResponse
+    {
+        if($trick->getAuthor() !== $this->getUser()) {
+            $this->addFlash('error', 'This action is unauthorized!');
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
+        return null;
     }
 }
