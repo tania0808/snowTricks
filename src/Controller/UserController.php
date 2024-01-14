@@ -38,8 +38,9 @@ class UserController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
-        if($user !== $this->getUser()) {
+        if ($user !== $this->getUser()) {
             $this->addFlash('error', 'You cannot access this page!');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -48,14 +49,14 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
             /** @var UploadedFile $profileImageFile */
             $profileImageFile = $form->get('imageName')->getData();
 
-            if($profileImageFile) {
+            if ($profileImageFile) {
                 $newFileName = $fileUploader->upload($profileImageFile);
-                if($user->getImageName() !== null) {
+                if (null !== $user->getImageName()) {
                     $fileUploader->delete($user->getImageName());
                 }
                 $user->setImageName($newFileName);
@@ -65,9 +66,9 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Profile information modified!');
+
             return $this->redirectToRoute('user_profile', ['id' => $user->getId()]);
         }
-
 
         return $this->render('profile/_profile-form.html.twig', [
             'userForm' => $form->createView(),
@@ -80,6 +81,7 @@ class UserController extends AbstractController
     {
         if ($user !== $this->getUser()) {
             $this->addFlash('error', 'You cannot access this page!');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -89,7 +91,7 @@ class UserController extends AbstractController
 
         $passwordForm->handleRequest($request);
 
-        if($passwordForm->isSubmitted() && $passwordForm->isValid()) {
+        if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
             $user->setPassword($userPasswordHasher->hashPassword(
                 $user,
                 $passwordForm->get('newPassword')->getData()
@@ -98,8 +100,10 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Profile information modified!');
+
             return $this->redirectToRoute('user_profile', ['id' => $user->getId()]);
         }
+
         return $this->render('profile/_password-form.html.twig', [
             'passwordForm' => $passwordForm->createView(),
         ]);

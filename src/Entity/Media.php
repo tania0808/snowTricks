@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MediaRepository;
-use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -26,15 +25,13 @@ class Media
     #[ORM\Column(length: 55)]
     private ?string $type = null;
 
-
-
     #[ORM\Column]
     #[Gedmo\Timestampable(on: 'create')]
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column]
     #[Gedmo\Timestampable(on: 'update')]
-    private DateTimeImmutable $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     public function getId(): ?int
     {

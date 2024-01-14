@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Doctrine\DBAL\Types\DateType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -14,9 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use function Zenstruck\Foundry\faker;
 
 class UserProfileType extends AbstractType
 {
@@ -50,8 +46,8 @@ class UserProfileType extends AbstractType
                             'image/png',
                         ],
                         'mimeTypesMessage' => 'Please upload a valid PNG/JPEG image',
-                    ])
-                ]
+                    ]),
+                ],
             ])
         ;
     }
@@ -66,7 +62,7 @@ class UserProfileType extends AbstractType
                     'fields' => ['username'],
                     'message' => 'This username is already taken',
                 ]),
-            ]
+            ],
         ]);
     }
 }

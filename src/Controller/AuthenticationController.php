@@ -31,6 +31,7 @@ class AuthenticationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
         $this->JWTTokenManager = $JWTTokenManager;
     }
+
     #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -73,13 +74,11 @@ class AuthenticationController extends AbstractController
                 $this->addFlash('success', 'Your account has been created. Please check your email for a verification link.');
 
                 return $this->redirectToRoute('app_login');
-            }
-            catch (UniqueConstraintViolationException $e) {
+            } catch (UniqueConstraintViolationException $e) {
                 // Handle unique constraint violation (username or email already exists)
                 $form->get('username')->addError(new FormError('Username already taken'));
                 $form->get('email')->addError(new FormError('Email already registered'));
             }
-
         }
 
         return $this->render('authentication/signup.html.twig', [
@@ -115,19 +114,19 @@ class AuthenticationController extends AbstractController
                 return $this->redirectToRoute('app_register');
             }
 
-            if($user->getIsVerified()) {
+            if ($user->getIsVerified()) {
                 $this->addFlash('success', 'Your email address has already been verified.');
+
                 return $this->redirectToRoute('app_login');
             }
 
             $this->emailVerifier->handleEmailConfirmation($request, $user);
             $this->addFlash('success', 'Your email address has been verified.');
-
         } catch (JWTDecodeFailureException $e) {
             $this->addFlash('error', 'Invalid or expired token.');
+
             return $this->redirectToRoute('app_register');
         }
-
 
         $this->addFlash('success', 'Your email address has been verified.');
 

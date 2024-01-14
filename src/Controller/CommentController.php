@@ -23,7 +23,7 @@ class CommentController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $comment = $form->getData();
             $comment->setAuthor($this->getUser());
             $comment->setTrick($trick);
@@ -32,6 +32,7 @@ class CommentController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Commented !');
+
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
 
@@ -46,8 +47,9 @@ class CommentController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(Comment $comment, EntityManagerInterface $entityManager, Trick $trick): Response
     {
-        if($comment->getAuthor() !== $this->getUser()) {
+        if ($comment->getAuthor() !== $this->getUser()) {
             $this->addFlash('error', 'You cannot delete this comment!');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -55,6 +57,7 @@ class CommentController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Comment deleted!');
+
         return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
     }
 }

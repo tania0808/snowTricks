@@ -10,10 +10,8 @@ use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\Service\FileUploader;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +34,7 @@ class TrickController extends AbstractController
             'next' => $offset + $commentRepository::PAGINATOR_PER_PAGE,
         ]);
     }
+
     /**
      * @Route("/tricks-partial/{offset}", name="tricks_partial")
      */
@@ -49,6 +48,7 @@ class TrickController extends AbstractController
             'next' => $offset + $trickRepository::PAGINATOR_PER_PAGE,
         ]);
     }
+
     #[Route('/', name: 'app_home')]
     public function index(Request $request, TrickRepository $trickRepository): Response
     {
@@ -69,7 +69,6 @@ class TrickController extends AbstractController
         $media = $trick->getMedia();
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $commentRepository->getCommentPaginator($offset);
-
 
         $form = $this->createForm(CommentFormType::class, null, [
             'trickId' => $trick->getId(),
@@ -93,7 +92,7 @@ class TrickController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $trick = $form->getData();
             $trick->setAuthor($this->getUser());
 
@@ -103,6 +102,7 @@ class TrickController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Trick created!');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -121,6 +121,7 @@ class TrickController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Trick deleted!');
+
         return $this->redirectToRoute('app_home');
     }
 
@@ -135,7 +136,7 @@ class TrickController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->uploadVideos($form, $trick);
             $trick = $form->getData();
             $this->uploadImages($form, $fileUploader, $trick);
@@ -144,6 +145,7 @@ class TrickController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Trick information modified!');
+
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
 
@@ -164,12 +166,13 @@ class TrickController extends AbstractController
     #[Route('/media/delete/{id}', name: 'trick_media_delete')]
     public function delete_media(Media $media, EntityManagerInterface $entityManager, FileUploader $fileUploader)
     {
-        if($media->getTrick()->getAuthor() !== $this->getUser()) {
+        if ($media->getTrick()->getAuthor() !== $this->getUser()) {
             $this->addFlash('error', 'You cannot delete this media!');
+
             return $this->redirectToRoute('app_home');
         }
 
-        if($media->getType() === 'image') {
+        if ('image' === $media->getType()) {
             $fileUploader->delete($media->getName());
         }
 
@@ -177,13 +180,15 @@ class TrickController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Media deleted!');
+
         return $this->redirectToRoute('trick_edit', ['id' => $media->getTrick()->getId()]);
     }
 
-    private function uploadVideos($form, $trick) {
+    private function uploadVideos($form, $trick)
+    {
         $videos = $form->get('videos')->getData();
-        if($videos) {
-            foreach($videos as $video) {
+        if ($videos) {
+            foreach ($videos as $video) {
                 $media = new Media();
                 $media->setName($video->getName());
                 $media->setType('video');
@@ -191,11 +196,13 @@ class TrickController extends AbstractController
             }
         }
     }
-    private function uploadImages($form, $fileUploader, $trick) {
+
+    private function uploadImages($form, $fileUploader, $trick)
+    {
         /** @var UploadedFile[] $profileImageFile */
         $images = $form->get('media')->getData();
-        if($images) {
-            foreach($images as $image) {
+        if ($images) {
+            foreach ($images as $image) {
                 $newFileName = $fileUploader->upload($image);
                 $media = new Media();
                 $media->setName($newFileName);
@@ -205,14 +212,14 @@ class TrickController extends AbstractController
         }
     }
 
-
-
     private function guardAgainstUnauthorizedUser(Trick $trick): ?RedirectResponse
     {
-        if($trick->getAuthor() !== $this->getUser()) {
+        if ($trick->getAuthor() !== $this->getUser()) {
             $this->addFlash('error', 'This action is unauthorized!');
+
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
+
         return null;
     }
 }

@@ -11,7 +11,7 @@ class FileUploader
     public function __construct(
         private string $targetDirectory,
         private SluggerInterface $slugger
-    ){
+    ) {
     }
 
     public function upload(UploadedFile $file): string
@@ -30,12 +30,11 @@ class FileUploader
 
     public function delete(string $imageName)
     {
-        unlink($this->getTargetDirectory() . '/' . $imageName);
+        unlink($this->getTargetDirectory().'/'.$imageName);
     }
 
     public function getTargetDirectory(): string
     {
         return $this->targetDirectory;
     }
-
 }
