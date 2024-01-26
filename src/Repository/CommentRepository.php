@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,10 +25,12 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function getCommentPaginator(int $offset): Paginator
+    public function getCommentPaginator(int $offset, Trick $trick): Paginator
     {
         $query = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
+            ->where('c.trick = :trick')
+            ->setParameter('trick', $trick)
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery()

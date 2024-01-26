@@ -22,13 +22,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TrickController extends AbstractController
 {
     /**
-     * @Route("/comments-partial/{offset}", name="comments_partial")
+     * @Route("/comments-partial/{offset}/{trick}", name="comments_partial")
      */
-    public function commentsPartial(Request $request, CommentRepository $commentRepository, int $offset): Response
+    public function commentsPartial(Request $request, CommentRepository $commentRepository, TrickRepository $trickRepository, int $offset, Trick $trick): Response
     {
-        $paginator = $commentRepository->getCommentPaginator($offset);
+        $trick = $trickRepository->find($trick);
+        $paginator = $commentRepository->getCommentPaginator($offset, $trick);
 
         return $this->render('comment/_comments_partial.html.twig', [
+            'trick' => $trick,
             'comments' => $paginator,
             'previous' => $offset - $commentRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + $commentRepository::PAGINATOR_PER_PAGE,
@@ -68,7 +70,7 @@ class TrickController extends AbstractController
         $trick = $trickRepository->find($trick);
         $media = $trick->getMedia();
         $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $commentRepository->getCommentPaginator($offset);
+        $paginator = $commentRepository->getCommentPaginator($offset, $trick);
 
         $form = $this->createForm(CommentFormType::class, null, [
             'trickId' => $trick->getId(),

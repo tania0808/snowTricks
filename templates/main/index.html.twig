@@ -3,7 +3,7 @@
 {% block title %}Snowtricks{% endblock %}
 
 {% block body %}
-
+{{ include('shared/_nav.html.twig') }}
 <div class="w-full h-5/6">
     <img class="flex w-full max-h-5/6 h-[85vh] object-cover" src="images/yann-allegre-8FG9tt8qZ-8-unsplash.jpg" alt="">
 </div>
@@ -16,24 +16,4 @@
 
 {% endblock %}
 
-{% block javascripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const addOpenModal = (event) => {
-                const deleteButton = event.currentTarget;
-                const dataIdValue = deleteButton.getAttribute('data-id');
 
-                const deleteLink = document.querySelector('#delete-link');
-                if (deleteLink) {
-                    deleteLink.href = '/trick/delete/' + dataIdValue;
-                }
-
-                const mediaIdInput = document.querySelector('#media-id-input');
-                if (mediaIdInput) {
-                    mediaIdInput.value = dataIdValue;
-                }
-            }
-            document.querySelectorAll('#delete-button').forEach(btn => btn.addEventListener('click', addOpenModal));
-        });
-    </script>
-{% endblock %}

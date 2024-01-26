@@ -13,6 +13,7 @@
     </script>
 {% endblock %}
 {% block body %}
+{{ include('shared/_nav.html.twig') }}
 <section class="text-gray-700 body-font overflow-hidden bg-white">
     <div class="container px-4 lg:w-4/6 py-6 mx-auto mb-10 relative">
         <div class="absolute top-10 right-6">
@@ -63,5 +64,6 @@
         </div>
     </div>
 </section>
-{{ include('tricks/partials/_comments.html.twig', { comments: comments, previous: previous, next: next}) }}
+
+{{ include('tricks/partials/_comments.html.twig', { trick: trick, comments: comments|default([]), previous: previous|default(-3), next: next|default(3)}) }}
 {% endblock %}

@@ -61,31 +61,3 @@
 
     </section>
 {% endblock %}
-
-{% block javascripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const addOpenModal = (event) => {
-                const deleteButton = event.currentTarget;
-                const dataIdValue = deleteButton.getAttribute('data-id');
-
-                console.log(dataIdValue);
-
-                // Assuming you want to update the href of a link inside the modal with id 'delete-link'
-                const deleteLink = document.querySelector('#delete-link');
-                if (deleteLink) {
-                    deleteLink.href = '/media/delete/' + dataIdValue;
-                }
-
-                // Assuming your modal has an input field with id 'media-id-input'
-                const mediaIdInput = document.querySelector('#media-id-input');
-                if (mediaIdInput) {
-                    mediaIdInput.value = dataIdValue;
-                }
-
-            }
-
-            document.querySelectorAll('#delete-button').forEach(btn => btn.addEventListener('click', addOpenModal));
-        });
-    </script>
-{% endblock %}

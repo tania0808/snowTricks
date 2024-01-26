@@ -31,8 +31,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.video-item').remove()));
     document.querySelectorAll('.btn-new').forEach(btn => btn.addEventListener('click', addNewVideo));
-
-    const logMessage = () => {
-        console.log('test')
-    }
 });
