@@ -2,41 +2,42 @@
     {% if tricks|length < 1 %}
         <div class="font-bold text-2xl m-5 text-gray-800">No posts yet</div>
     {% else %}
-    <section id="tricks" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2">
-        <!-- Card Component -->
-        {% for trick in tricks %}
-            {{ include('tricks/partials/_card.html.twig', { trick: trick }) }}
-        {% endfor %}
-
+    <section class="flex flex-col">
+        <div id="tricks" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2"> <!-- Card Component -->
+            {% for trick in tricks %}
+                {{ include('tricks/partials/_card.html.twig', { trick: trick }) }}
+            {% endfor %}
+        </div>
         <!-- Pagination -->
-        <div class="my-6 w-full flex justify-center	">
-            {% if previous >= 0 %}
-                <a href="#" onclick="loadTricks({{ previous }}); return false;" class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
-                    </svg>
-                    Previous
-                </a>
-            {% endif %}
-
+        <div class="my-6 w-full flex justify-center	mx-auto">
             {% if next < tricks|length %}
-                <a href="#" onclick="loadTricks({{ next }}); return false;" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    Next
+                <a id="next_button" href="#" onclick="loadTricks({{ next }}); return false;" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    Load More
                     <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                     </svg>
                 </a>
             {% endif %}
         </div>
+    </section>
 
+    {% endif %}
         <script>
+            const tricksCount = {{ tricks|length }};
+
             function loadTricks(offset) {
                 const url = '{{ path('tricks_partial', {'offset': '__offset__'})|replace({'__offset__': ''}) }}' + offset;
 
                 fetch(url)
                     .then(response => response.text())
                     .then(html => {
-                        document.getElementById('tricks').innerHTML = html;
+                        document.getElementById('tricks').innerHTML += html;
+                        const tricks = document.querySelectorAll('.trick-card');
+                        const nextButton = document.querySelector('#next_button');
+
+                        if(tricks.length === tricksCount) {
+                            nextButton.style.display = 'none';
+                        }
                         initFlowbite();
                         scrollToTricks();
                     })
@@ -52,6 +53,4 @@
                 }
             }
         </script>
-    </section>
-    {% endif %}
 {% endblock %}

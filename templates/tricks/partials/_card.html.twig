@@ -1,4 +1,4 @@
-<div class="transition-all duration-150 flex w-full px-4 py-6 relative">
+<div class="trick-card transition-all duration-150 flex w-full px-4 py-6 relative">
     {% if is_granted('IS_AUTHENTICATED_FULLY') and trick.author.id is same as app.user.id %}
         <div class="flex absolute top-8 right-4">
             <a href="{{ path('trick_edit', {id: trick.id}) }}">
