@@ -4,9 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Media;
 use App\Entity\Trick;
-use App\Factory\CategoryFactory;
-use App\Factory\TrickFactory;
-use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -82,15 +79,14 @@ class TricksFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
-
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < count($this->tricksList); $i++) {
+        for ($i = 0; $i < count($this->tricksList); ++$i) {
             $trick = new Trick();
             $trick->setName($this->tricksList[$i]['name']);
             $trick->setDescription($this->tricksList[$i]['description']);
-            $trick->setCategory($this->getReference('category_' . strtolower($this->tricksList[$i]['category'])));
-            $trick->setAuthor($this->getReference('user_' . $i));
+            $trick->setCategory($this->getReference('category_'.strtolower($this->tricksList[$i]['category'])));
+            $trick->setAuthor($this->getReference('user_'.$i));
             $media = new Media();
             $media->setName($this->tricksList[$i]['image']);
             $media->setType('image');

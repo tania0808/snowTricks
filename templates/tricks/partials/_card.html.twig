@@ -1,4 +1,4 @@
-<div class="transition-all duration-150 flex w-full px-4 py-6 md:w-1/2 lg:w-1/3 relative">
+<div class="transition-all duration-150 flex w-full px-4 py-6 relative">
     {% if is_granted('IS_AUTHENTICATED_FULLY') and trick.author.id is same as app.user.id %}
         <div class="flex absolute top-8 right-4">
             <a href="{{ path('trick_edit', {id: trick.id}) }}">
@@ -35,7 +35,7 @@
         </div>
         <hr class="border-gray-300" />
         <p
-                class="flex flex-row flex-wrap w-full px-4 py-2 overflow-hidden text-sm text-justify text-gray-700"
+                class="w-full my-2 px-4 overflow-hidden text-sm text-justify text-gray-700 line-clamp-3"
         >
             {{ trick.description }}
         </p>

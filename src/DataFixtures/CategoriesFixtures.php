@@ -25,13 +25,12 @@ class CategoriesFixtures extends Fixture
         'Presses',
     ];
 
-
     public function load(ObjectManager $manager): void
     {
         foreach ($this->trickCategories as $categoryName) {
             $category = new Category();
             $category->setName($categoryName);
-            $this->addReference('category_' . strtolower($categoryName), $category);
+            $this->addReference('category_'.strtolower($categoryName), $category);
 
             $manager->persist($category);
         }

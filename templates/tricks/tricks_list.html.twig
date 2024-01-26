@@ -2,7 +2,7 @@
     {% if tricks|length < 1 %}
         <div class="font-bold text-2xl m-5 text-gray-800">No posts yet</div>
     {% else %}
-    <section id="tricks" class="flex flex-row flex-wrap mx-auto">
+    <section id="tricks" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2">
         <!-- Card Component -->
         {% for trick in tricks %}
             {{ include('tricks/partials/_card.html.twig', { trick: trick }) }}
