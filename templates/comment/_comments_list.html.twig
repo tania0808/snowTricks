@@ -1,0 +1,77 @@
+{% block body %}
+<!-- COMMENTS SECTION -->
+<section class="container px-5 pt-6 pb-6 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-col">
+        <!-- Card Component -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-lg lg:text-2xl font-bold text-gray-900">Discussion ({{ comments|length }})</h2>
+        </div>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {{ include('comment/comment_form.html.twig') }}
+        {% else %}
+            <div class="flex items-center p-4 mb-4 text-sm text-blue-800
+                        rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+                <i class="fa-solid fa-circle-info"></i>
+                <div>
+                    <span class="font-medium ml-4">You must be authenticated to add the comment</span>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if comments|length < 1 %}
+            <div class="font-bold text-2xl m-5 text-gray-800">No comments yet</div>
+        {% else %}
+            <section id="comments" class="flex flex-col mx-auto w-full">
+                {% for comment in comments %}
+                    {{ include('comment/comment_card.html.twig') }}
+                {% endfor %}
+            </section>
+            <!-- Pagination -->
+            <div class="single_trick my-6 w-full flex justify-center">
+                <a id="next_comment_button" href="#" onclick="loadComments(); return false;" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    Load More
+                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
+            </div>
+
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+<script>
+    const trickId = {{ trick.id }};
+    const commentCount = {{ comments|length }};
+    let loadedCommentsCount = Math.max(0, Math.min(3, commentCount || 0));
+
+    function loadComments() {
+        const url = '/comments-partial/' + loadedCommentsCount + '/' + trickId;
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('comments').innerHTML += html;
+                const comments = document.querySelectorAll('.comment_card');
+                const nextButton = document.querySelector('#next_comment_button');
+
+                if(comments.length === commentCount) {
+                    nextButton.style.display = 'none';
+                }
+                initFlowbite();
+                scrollToTricks();
+
+                loadedCommentsCount = comments.length;
+            })
+            .catch(error => {
+                console.error('Error loading tricks:', error);
+            });
+    }
+
+    function scrollToTricks() {
+        var commentsElement = document.getElementById('comments');
+        if (commentsElement) {
+            commentsElement.scrollIntoView({ behavior: 'instant' });
+        }
+    }
+</script>

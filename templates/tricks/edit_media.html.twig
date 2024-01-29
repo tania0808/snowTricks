@@ -17,6 +17,7 @@
     {% for flash_error in app.flashes('error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
+    {{ include('shared/_nav.html.twig') }}
     <section class="bg-gray-50 py-6 h-screen">
         {{ include('tricks/partials/_trick_edit_header.html.twig', {'trick': trick}) }}
         <div class="w-full max-w-screen-xl mx-auto">
@@ -30,6 +31,29 @@
 
             <div class="container pt-2 pb-4 mx-auto grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {{ include('tricks/partials/_modal.html.twig', {deleteRoute: 'trick_media_delete'}) }}
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const addOpenModal = (event) => {
+                            console.log(event.currentTarget)
+                            const deleteButton = event.currentTarget;
+                            const dataIdValue = deleteButton.getAttribute('data-id');
+
+                            const deleteLink = document.querySelector('#delete-link');
+                            console.log('type',deleteLink.dataset.type)
+                            if (deleteLink) {
+                                deleteLink.href = '/media/delete/' + dataIdValue;
+                            }
+                            console.log(deleteLink.href)
+
+                            const mediaIdInput = document.querySelector('#media-id-input');
+                            if (mediaIdInput) {
+                                mediaIdInput.value = dataIdValue;
+                            }
+                        }
+                        document.querySelectorAll('#delete-button').forEach(btn => btn.addEventListener('click', addOpenModal));
+                    });
+                </script>
                 {% for media in trick.media %}
                     {% if media.type == 'image' %}
                         <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">

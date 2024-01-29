@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const addOpenModal = (event) => {
-        console.log(event.currentTarget)
+    const addOpenModal = (route) => {
+        console.log('event',event.currentTarget)
+        console.log('route', route)
         const deleteButton = event.currentTarget;
         const dataIdValue = deleteButton.getAttribute('data-id');
 
         const deleteLink = document.querySelector('#delete-link');
         if (deleteLink) {
-            deleteLink.href = '/trick/delete/' + dataIdValue;
+            console.log(deleteLink.href)
+            deleteLink.href = route + dataIdValue;
         }
 
         const mediaIdInput = document.querySelector('#media-id-input');

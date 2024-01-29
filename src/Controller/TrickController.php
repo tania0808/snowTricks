@@ -32,8 +32,6 @@ class TrickController extends AbstractController
         return $this->render('comment/_comments_partial.html.twig', [
             'trick' => $trick,
             'comments' => $paginator,
-            'previous' => $offset - $commentRepository::PAGINATOR_PER_PAGE,
-            'next' => $offset + $commentRepository::PAGINATOR_PER_PAGE,
         ]);
     }
 
@@ -46,8 +44,6 @@ class TrickController extends AbstractController
 
         return $this->render('tricks/partials/_tricks_partial.html.twig', [
             'tricks' => $paginator,
-            'previous' => $offset - $trickRepository::PAGINATOR_PER_PAGE,
-            'next' => $offset + $trickRepository::PAGINATOR_PER_PAGE,
         ]);
     }
 
@@ -81,7 +77,6 @@ class TrickController extends AbstractController
             'media' => $media,
             'comments' => $paginator,
             'commentForm' => $form->createView(),
-            'previous' => $offset - $commentRepository::PAGINATOR_PER_PAGE,
             'next' => $offset + $commentRepository::PAGINATOR_PER_PAGE,
         ]);
     }
@@ -133,8 +128,8 @@ class TrickController extends AbstractController
     {
         $this->guardAgainstUnauthorizedUser($trick);
 
-        $user = $trickRepository->find($trick);
-        $form = $this->createForm(EditTrickFormType::class, $user);
+        $trick = $trickRepository->find($trick);
+        $form = $this->createForm(EditTrickFormType::class, $trick);
 
         $form->handleRequest($request);
 
