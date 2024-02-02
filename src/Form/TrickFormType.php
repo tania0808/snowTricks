@@ -32,6 +32,7 @@ class TrickFormType extends AbstractType
                 ],
             ])
             ->add('description', TextareaType::class, [
+                'attr' => ['rows' => 5],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a description',
@@ -64,7 +65,7 @@ class TrickFormType extends AbstractType
                                     'image/jpeg',
                                     'image/png',
                                     'image/jpg',
-                                    'image/webp'
+                                    'image/webp',
                                 ],
                                 'mimeTypesMessage' => 'Please upload a JPG or PNG file',
                             ]),

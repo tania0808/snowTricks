@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Twig\Environment;
 
 class ErrorController extends AbstractController
@@ -34,10 +33,12 @@ class ErrorController extends AbstractController
             case 500:
                 $message = 'Internal server error.';
                 $details = 'Sorry, something went wrong.';
+                // no break
             default:
                 $details = 'Sorry, something went wrong.Please wait a few minutes and try again.';
                 $message = 'An error occurred.';
         }
+
         return new Response(
             $this->twig->render('bundles/TwigBundle/Exception/error.html.twig', ['exception' => $exception, 'status' => $statusCode, 'message' => $message, 'details' => $details]),
             $statusCode

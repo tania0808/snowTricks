@@ -1,21 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const addOpenModal = (event) => {
-        console.log(event.currentTarget)
+    const addOpenDeleteModal = (event) => {
         const deleteButton = event.currentTarget;
         const dataIdValue = deleteButton.getAttribute('data-id');
 
         const deleteLink = document.querySelector('#delete-link');
         if (deleteLink) {
-            deleteLink.href = '/trick/delete/' + dataIdValue;
-        }
-
-        const mediaIdInput = document.querySelector('#media-id-input');
-        if (mediaIdInput) {
-            mediaIdInput.value = dataIdValue;
+            deleteLink.href = '/media/delete/' + dataIdValue;
         }
     }
-    document.querySelectorAll('#delete-button').forEach(btn => btn.addEventListener('click', addOpenModal));
-
+    document.querySelectorAll('#delete-media-button').forEach(btn => btn.addEventListener('click', addOpenDeleteModal));
     const addNewVideo = (e) => {
         const videosUrlCollection = document.querySelector(e.currentTarget.dataset.collection);
 
@@ -31,8 +24,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.video-item').remove()));
     document.querySelectorAll('.btn-new').forEach(btn => btn.addEventListener('click', addNewVideo));
-
-    const logMessage = () => {
-        console.log('test')
-    }
 });

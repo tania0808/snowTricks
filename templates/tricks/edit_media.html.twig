@@ -32,33 +32,11 @@
             <div class="container pt-2 pb-4 mx-auto grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {{ include('tricks/partials/_modal.html.twig', {deleteRoute: 'trick_media_delete'}) }}
 
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const addOpenModal = (event) => {
-                            console.log(event.currentTarget)
-                            const deleteButton = event.currentTarget;
-                            const dataIdValue = deleteButton.getAttribute('data-id');
-
-                            const deleteLink = document.querySelector('#delete-link');
-                            console.log('type',deleteLink.dataset.type)
-                            if (deleteLink) {
-                                deleteLink.href = '/media/delete/' + dataIdValue;
-                            }
-                            console.log(deleteLink.href)
-
-                            const mediaIdInput = document.querySelector('#media-id-input');
-                            if (mediaIdInput) {
-                                mediaIdInput.value = dataIdValue;
-                            }
-                        }
-                        document.querySelectorAll('#delete-button').forEach(btn => btn.addEventListener('click', addOpenModal));
-                    });
-                </script>
                 {% for media in trick.media %}
                     {% if media.type == 'image' %}
                         <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
                             <div class="flex absolute top-2 right-1">
-                                <button data-id="{{ media.id }}" id="delete-button" onclick="addOpenModal()" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                                <button data-id="{{ media.id }}" id="delete-media-button" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -70,7 +48,7 @@
                         {% set videoId = media.name | split('v=') | last %}
                         <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
                             <div class="flex absolute top-2 right-1">
-                                <button data-id="{{ media.id }}" id="delete-button" onclick="addOpenModal()" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
+                                <button data-id="{{ media.id }}" id="delete-media-button" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>

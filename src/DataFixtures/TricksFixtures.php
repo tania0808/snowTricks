@@ -11,7 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 class TricksFixtures extends Fixture implements DependentFixtureInterface
 {
     // const
-    private array  $tricksList = [
+    private array $tricksList = [
         [
             'name' => 'Skating',
             'description' => 'Don’t rush up the slope just yet. Lock your leading foot into it’s binding, while keeping the back foot free. Stand on a flat surface and get a feel for the snowboard’s movement.',
