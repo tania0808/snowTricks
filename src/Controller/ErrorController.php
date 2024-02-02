@@ -21,19 +21,26 @@ class ErrorController extends AbstractController
 
         $message = '';
         $details = '';
+
         switch ($statusCode) {
             case 403:
                 $message = 'Access denied.';
                 $details = 'Sorry, you do not have permission to access this page.';
+
                 break;
+
             case 404:
                 $message = 'Page not found.';
                 $details = 'Sorry, the page you are looking for could not be found.';
+
                 break;
+
             case 500:
                 $message = 'Internal server error.';
                 $details = 'Sorry, something went wrong.';
-                // no break
+
+                break;
+
             default:
                 $details = 'Sorry, something went wrong.Please wait a few minutes and try again.';
                 $message = 'An error occurred.';

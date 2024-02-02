@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use PHPUnit\Util\Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -39,9 +38,11 @@ class FileUploader
 
         if ($filesystem->exists($filePath)) {
             $filesystem->remove($filePath);
-        } else {
-            throw new NotFoundHttpException('File not found', null, 404);
+
+            return;
         }
+
+        throw new NotFoundHttpException('File not found', null, 404);
     }
 
     public function getTargetDirectory(): string

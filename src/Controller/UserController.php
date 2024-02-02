@@ -55,9 +55,11 @@ class UserController extends AbstractController
 
             if ($profileImageFile) {
                 $newFileName = $fileUploader->upload($profileImageFile);
+
                 if (null !== $user->getImageName()) {
                     $fileUploader->delete($user->getImageName());
                 }
+
                 $user->setImageName($newFileName);
             }
 

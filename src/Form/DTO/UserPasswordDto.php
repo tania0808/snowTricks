@@ -11,11 +11,13 @@ class UserPasswordDto
         message: 'Wrong value for your current password',
     )]
     protected string $oldPassword;
+
     #[Assert\Length(
         min: 2,
         minMessage: 'Your password must be at least {{ limit }} characters long',
     )]
     public ?string $newPassword = null;
+
     #[Assert\IdenticalTo(
         propertyPath: 'newPassword',
         message: 'The password confirmation does not match',

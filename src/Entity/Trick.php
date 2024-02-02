@@ -61,6 +61,7 @@ class Trick
     public function setVideos(array $videos): void
     {
         $this->videos = new ArrayCollection($videos);
+
         foreach ($videos as $video) {
             $video->setType('video');
             $video->setTrick($this);

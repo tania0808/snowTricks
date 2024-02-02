@@ -22,10 +22,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TrickController extends AbstractController
 {
-    /**
-     * @Route("/comments-partial/{offset}/{trick}", name="comments_partial")
-     */
-    public function commentsPartial(Request $request, CommentRepository $commentRepository, TrickRepository $trickRepository, int $offset, Trick $trick): Response
+    #[Route('/comments-partial/{offset}/{trick}', name: 'comments_partial')]
+    public function commentsPartial(CommentRepository $commentRepository, TrickRepository $trickRepository, int $offset, Trick $trick): Response
     {
         $trick = $trickRepository->find($trick);
         $paginator = $commentRepository->getCommentPaginator($offset, $trick);
@@ -36,10 +34,8 @@ class TrickController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tricks-partial/{offset}", name="tricks_partial")
-     */
-    public function tricksPartial(Request $request, TrickRepository $trickRepository, int $offset): Response
+    #[Route('/tricks-partial/{offset}', name: 'tricks_partial')]
+    public function tricksPartial(TrickRepository $trickRepository, int $offset): Response
     {
         $paginator = $trickRepository->getTrickPaginator($offset);
 
@@ -183,6 +179,7 @@ class TrickController extends AbstractController
     private function uploadVideos($form, $trick)
     {
         $videos = $form->get('videos')->getData();
+
         if ($videos) {
             foreach ($videos as $video) {
                 $media = new Media();
@@ -197,6 +194,7 @@ class TrickController extends AbstractController
     {
         /** @var UploadedFile[] $profileImageFile */
         $images = $form->get('media')->getData();
+
         if ($images) {
             foreach ($images as $image) {
                 $newFileName = $fileUploader->upload($image);

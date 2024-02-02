@@ -24,6 +24,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AuthenticationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
+
     private JWTTokenManagerInterface $JWTTokenManager;
 
     public function __construct(EmailVerifier $emailVerifier, JWTTokenManagerInterface $JWTTokenManager)
@@ -62,7 +63,9 @@ class AuthenticationController extends AbstractController
                 $entityManager->flush();
 
                 // Sending the confirmation email
-                $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                $this->emailVerifier->sendEmailConfirmation(
+                    'app_verify_email',
+                    $user,
                     (new TemplatedEmail())
                         ->from(new Address('tania08082000@gmail.com', 'AcmeMailBot'))
                         ->to($user->getEmail())
