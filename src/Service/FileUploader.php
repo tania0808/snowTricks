@@ -2,8 +2,11 @@
 
 namespace App\Service;
 
+use PHPUnit\Util\Exception;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
@@ -23,6 +26,7 @@ class FileUploader
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
+            throw new \Exception($e->getMessage(), null, $e->getCode());
         }
 
         return $fileName;
@@ -30,7 +34,14 @@ class FileUploader
 
     public function delete(string $imageName)
     {
-        unlink($this->getTargetDirectory().'/'.$imageName);
+        $filesystem = new Filesystem();
+        $filePath = $this->getTargetDirectory().'/'.$imageName;
+
+        if ($filesystem->exists($filePath)) {
+            $filesystem->remove($filePath);
+        } else {
+            throw new NotFoundHttpException('File not found', null, 404);
+        }
     }
 
     public function getTargetDirectory(): string
