@@ -12,6 +12,7 @@ use App\Repository\TrickRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -155,6 +156,8 @@ class TrickController extends AbstractController
     #[Route('/media/edit/{id}', name: 'trick_media_edit')]
     public function edit_media(Trick $trick)
     {
+        $this->guardAgainstUnauthorizedUser($trick);
+
         return $this->render('tricks/edit_media.html.twig', [
             'trick' => $trick,
         ]);
@@ -163,11 +166,7 @@ class TrickController extends AbstractController
     #[Route('/media/delete/{id}', name: 'trick_media_delete')]
     public function delete_media(Media $media, EntityManagerInterface $entityManager, FileUploader $fileUploader)
     {
-        if ($media->getTrick()->getAuthor() !== $this->getUser()) {
-            $this->addFlash('error', 'You cannot delete this media!');
-
-            return $this->redirectToRoute('app_home');
-        }
+        $this->guardAgainstUnauthorizedUser($media->getTrick());
 
         if ('image' === $media->getType()) {
             $fileUploader->delete($media->getName());
@@ -212,9 +211,7 @@ class TrickController extends AbstractController
     private function guardAgainstUnauthorizedUser(Trick $trick): ?RedirectResponse
     {
         if ($trick->getAuthor() !== $this->getUser()) {
-            $this->addFlash('error', 'This action is unauthorized!');
-
-            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+            throw new AccessDeniedException('This action is unauthorized!', 403);
         }
 
         return null;

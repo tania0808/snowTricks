@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,9 +40,7 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         if ($user !== $this->getUser()) {
-            $this->addFlash('error', 'You cannot access this page!');
-
-            return $this->redirectToRoute('app_home');
+            throw new AccessDeniedException('This action is unauthorized!', 403);
         }
 
         $user = $userRepository->find($user);
@@ -80,9 +79,7 @@ class UserController extends AbstractController
     public function editPassword(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         if ($user !== $this->getUser()) {
-            $this->addFlash('error', 'You cannot access this page!');
-
-            return $this->redirectToRoute('app_home');
+            throw new AccessDeniedException('This action is unauthorized!', 403);
         }
 
         $user = $userRepository->find($user);
