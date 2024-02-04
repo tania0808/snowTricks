@@ -2,18 +2,6 @@
 {% block title %}Edit the trick{% endblock %}
 
 {% block body %}
-    {% apply inline_css %}
-        <style>
-            input[type=file]::file-selector-button {
-                border: 2px solid rgb(29 78 216);
-                padding: .2em .4em;
-                margin-left: 0;
-                border-radius: .2em;
-                background-color: rgb(29 78 216);
-                transition: 1s;
-            }
-        </style>
-    {% endapply %}
     {% for flash_error in app.flashes('error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
@@ -56,10 +44,7 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-
             </div>
-
         </div>
-
     </section>
 {% endblock %}
