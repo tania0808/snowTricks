@@ -140,7 +140,7 @@ class TrickController extends AbstractController
 
             $this->addFlash('success', 'Trick information modified!');
 
-            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+            return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
         }
 
         return $this->render('tricks/edit-trick-form.html.twig', [

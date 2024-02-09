@@ -35,7 +35,7 @@ class CommentController extends AbstractController
 
             $this->addFlash('success', 'Commented !');
 
-            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+            return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
         }
 
         return $this->render('tricks/single_trick.html.twig', [
@@ -58,6 +58,6 @@ class CommentController extends AbstractController
 
         $this->addFlash('success', 'Comment deleted!');
 
-        return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
     }
 }
