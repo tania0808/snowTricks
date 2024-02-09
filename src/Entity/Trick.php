@@ -24,11 +24,11 @@ class Trick
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tricks', fetch: 'EAGER')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tricks', fetch: 'EAGER')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
@@ -43,10 +43,10 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, cascade: ['remove'])]
     private Collection $comments;
 
-    #[ORM\OneToMany(mappedBy: 'trick', cascade: ['persist', 'remove'], targetEntity: Media::class, fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, cascade: ['persist', 'remove'], fetch: 'EAGER')]
     private Collection $media;
 
-    #[ORM\OneToMany(mappedBy: 'trick', cascade: ['persist', 'remove'], targetEntity: Media::class, fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, cascade: ['persist', 'remove'], fetch: 'EAGER')]
     private Collection $videos;
 
     #[ORM\Column(length: 255)]
