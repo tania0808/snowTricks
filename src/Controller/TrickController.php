@@ -57,7 +57,7 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/tricks/{id}', name: 'trick_show')]
+    #[Route('/tricks/{slug}', name: 'trick_show')]
     public function show(Request $request, Trick $trick, TrickRepository $trickRepository, CommentRepository $commentRepository): Response
     {
         $trick = $trickRepository->find($trick);

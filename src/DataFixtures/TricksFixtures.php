@@ -7,6 +7,7 @@ use App\Entity\Trick;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class TricksFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -88,6 +89,7 @@ class TricksFixtures extends Fixture implements DependentFixtureInterface
             $trick->setDescription($this->tricksList[$i]['description']);
             $trick->setCategory($this->getReference('category_'.strtolower($this->tricksList[$i]['category'])));
             $trick->setAuthor($this->getReference('user_'.$i));
+            $trick->setSlug((new AsciiSlugger())->slug(strtolower($this->tricksList[$i]['name'])));
             $media = new Media();
             $media->setName($this->tricksList[$i]['image']);
             $media->setType('image');

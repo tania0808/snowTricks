@@ -27,7 +27,7 @@
             {% endif %}
         </div>
         <div class="flex flex-wrap items-center flex-1 px-4 py-1 text-center mx-auto">
-            <a href="{{ path('trick_show', { id: trick.id }) }}" class="hover:underline">
+            <a href="{{ path('trick_show', { slug: trick.slug }) }}" class="hover:underline">
                 <h2 class="text-2xl font-bold tracking-normal text-gray-800">
                     {{ trick.name }}
                 </h2>
