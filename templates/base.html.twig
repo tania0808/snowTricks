@@ -4,9 +4,6 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        <script src="https://kit.fontawesome.com/76cb77d7ca.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script>
 
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
@@ -16,7 +13,9 @@
 
         {% block javascripts %}
             {{ importmap() }}
-            <script src="{{ asset('js/app.js') }}"></script>
+            <script src="https://kit.fontawesome.com/76cb77d7ca.js" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script>
             <script src="{{ asset('js/mobile.js') }}"></script>
             <script src="{{ asset('js/comments.js') }}"></script>
             <script src="{{ asset('js/tricks.js') }}"></script>

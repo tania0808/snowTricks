@@ -18,21 +18,21 @@
 
                     {{ form_start(trickForm, {'attr': {'class': 'max-w-sm mx-auto mt-24', 'enctype': 'multipart/form-data'}}) }}
                     <div class="mb-5">
-                        {{ form_label(trickForm.name, 'Trick name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_label(trickForm.name, 'Trick name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
                         {{ form_widget(trickForm.name, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Frontflip', 'required': 'required'}}) }}
                         {% if form_errors(trickForm.name) %}
-                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                                 <span class="font-medium">{{ form_errors(trickForm.name) }}</span>
                             </div>
                         {% endif %}
                     </div>
 
                     <div class="mb-5">
-                        {{ form_label(trickForm.description, 'Description', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+                        {{ form_label(trickForm.description, 'Description', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900'}}) }}
                         {{ form_widget(trickForm.description, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': '.... a description for your trick', 'required': 'required'}}) }}
 
                         {% if form_errors(trickForm.description) %}
-                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                                 <span class="font-medium">{{ form_errors(trickForm.description) }}</span>
                             </div>
                         {% endif %}
@@ -42,7 +42,7 @@
                         {{ form_widget(trickForm.category, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
 
                         {% if form_errors(trickForm.category) %}
-                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                                 <span class="font-medium">{{ form_errors(trickForm.category) }}</span>
                             </div>
                         {% endif %}
@@ -53,7 +53,7 @@
                         {{ form_widget(trickForm.media, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
 
                         {% if form_errors(trickForm.media) %}
-                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                                 <span class="font-medium">{{ form_errors(trickForm.media) }}</span>
                             </div>
                         {% endif %}
@@ -72,7 +72,7 @@
                             {% endfor %}
                         </div>
                         {% if form_errors(trickForm.videos) %}
-                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            <div class="px-4 py-2 my-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                                 <span class="font-medium">{{ form_errors(trickForm.videos) }}</span>
                             </div>
                         {% endif %}

@@ -4,7 +4,7 @@
         {{ form_widget(commentForm.message, {'attr': {'class': 'px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none', 'placeholder': 'Write a comment...', 'rows': '6', 'required': 'required'}}) }}
     </div>
     {% if form_errors(commentForm.message) %}
-        <div class="px-4 py-2 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        <div class="px-4 py-2 mt-2 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
             <span class="font-medium">{{ form_errors(commentForm.message) }}</span>
         </div>
     {% endif %}

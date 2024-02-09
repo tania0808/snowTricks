@@ -22,7 +22,7 @@
 
                 {% for media in trick.media %}
                     {% if media.type == 'image' %}
-                        <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
+                        <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow relative">
                             <div class="flex absolute top-2 right-1">
                                 <button data-id="{{ media.id }}" id="delete-media-button" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                                     <i class="fa-solid fa-trash"></i>
@@ -34,7 +34,7 @@
                         </div>
                     {% elseif media.type == 'video' %}
                         {% set videoId = media.name | split('v=') | last %}
-                        <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
+                        <div class="h-[200px] bg-white border border-gray-200 rounded-lg shadow relative">
                             <div class="flex absolute top-2 right-1">
                                 <button data-id="{{ media.id }}" id="delete-media-button" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2">
                                     <i class="fa-solid fa-trash"></i>
