@@ -136,6 +136,7 @@ class TrickController extends AbstractController
             $this->uploadVideos($form, $trick);
             $trick = $form->getData();
             $this->uploadImages($form, $fileUploader, $trick);
+            $trick->setSlug((new AsciiSlugger())->slug(strtolower($trick->getName())));
 
             $entityManager->persist($trick);
             $entityManager->flush();

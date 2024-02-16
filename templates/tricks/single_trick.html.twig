@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}{{ trick.name }}{% endblock %}
 
 {% block body %}
-{{ include('shared/_nav.html.twig') }}
+    {{ include('shared/_nav.html.twig') }}
 <section class="text-gray-700 body-font overflow-hidden bg-white">
     <div class="container px-4 lg:w-4/6 py-6 mx-auto relative">
         <div class="absolute top-10 right-6">
@@ -12,7 +11,7 @@
         </div>
 
         <div class="w-full">
-            {% if trick.media|length %}
+            {% if trick.getImages|length %}
                 <img src="{{ asset('uploads/images/' ~ trick.getMainMedia.name) }}"
                      alt="Trick Cover" class="object-cover w-full h-[400px] rounded-lg rounded-b-none"/>
             {% else %}
@@ -23,18 +22,22 @@
 
         <div class="container hidden sm:block" id="mediaContainer">
             <div class="pt-2 pb-4 mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2">
-                {% for media in trick.media %}
-                    {% if media.type == 'image' %}
+                {% if trick.getImages|length > 1 %}
+                    {% for image in trick.getImages|slice(1) %}
                         <div class="h-[150px] bg-white border border-gray-200 rounded-lg shadow">
                             <a href="#">
-                                <img src="{{ asset('uploads/images/' ~ media.name) }}" alt="Blog Cover" class="rounded-t-lg h-[150px] w-full object-cover"/>
+                                <img src="{{ asset('uploads/images/' ~ image.name) }}" alt="Blog Cover" class="rounded-t-lg h-[150px] w-full object-cover"/>
                             </a>
                         </div>
-                    {% elseif media.type == 'video' %}
-                        {% set videoId = media.name | split('v=') | last %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if trick.getVideos|length >= 1 %}
+                    {% for video in trick.getVideos %}
+                        {% set videoId = video.name | split('v=') | last %}
                         <iframe width="100%" height="150" src="https://www.youtube.com/embed/{{ videoId }}"></iframe>
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </div>
 
         </div>

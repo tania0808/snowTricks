@@ -28,7 +28,6 @@ class EditTrickFormType extends AbstractType
                     new NotBlank([
                         'message' => 'Please enter a name',
                     ]),
-                    new Length(['min' => 10]),
                 ],
             ])
             ->add('description', TextareaType::class, [

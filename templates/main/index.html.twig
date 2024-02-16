@@ -8,7 +8,7 @@
     <img class="flex w-full h-[40vh] sm:h-[60vh] object-cover" alt="main_image" src={{ asset('images/yann-allegre-8FG9tt8qZ-8-unsplash.jpg') }} >
     <h1 class="absolute top-1/2 left-16 sm:left-24 mb-4 text-2xl sm:text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Find Your Snowboard Tricks</h1>
 
-    <a type="button" href="#tricks" class="mb-5 block absolute bottom-0 right-4 w-14 h-14 text-white bg-black hover:opacity-80 font-medium rounded-full text-sm p-5 text-center inline-flex items-center me-2"><i class="fa-solid fa-chevron-down"></i></a>
+    <a type="button" href="#tricks" class="mb-5 block absolute bottom-0 lg:bottom-[60px] right-4 w-14 h-14 text-white bg-black hover:opacity-80 font-medium rounded-full text-sm p-5 me-2"><i class="fa-solid fa-chevron-down"></i></a>
 </div>
 {% include 'tricks/tricks_list.html.twig' with {'tricks': tricks, 'previous': previous, 'next': next} %}
 

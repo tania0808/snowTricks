@@ -60,6 +60,14 @@ class Trick
         // Apply the criteria and return the filtered collection
         return $this->videos->matching($criteria);
     }
+    public function getImages(): Collection
+    {
+        // Use a Criteria object to filter the collection based on the 'type' property
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('type', 'image'));
+
+        // Apply the criteria and return the filtered collection
+        return $this->videos->matching($criteria);
+    }
 
     public function setVideos(array $videos): void
     {
